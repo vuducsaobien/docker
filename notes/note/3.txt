@@ -1,0 +1,35 @@
+Xoá tất cả Container, Images, Build, Volume trên Docker Desktop:
+    - docker system prune -a --volumes -f
+
+cd getting-started-todo-app-main 
+docker build -t DOCKER_USERNAME/getting-started-todo-app .
+docker build -t ducvu1995/getting-started-todo-app .
+
+3. To verify the image exists locally, you can use the docker image ls command:
+    docker image ls
+        REPOSITORY                           TAG       IMAGE ID       CREATED          SIZE
+        ducvu1995/getting-started-todo-app   latest    85b50079fbc1   29 seconds ago   1.75GB
+        
+4. To push the image, use the `docker push` command. Be sure to replace DOCKER_USERNAME with your username:
+    Docker Hub có API công khai cho phép bạn xem danh sách tag (mỗi tag = 1 image version).
+
+    curl -s https://hub.docker.com/v2/repositories/ducvu1995/getting-started-todo-app/tags/ | jq '.results[].name'
+    (Rỗng)
+    docker push ducvu1995/getting-started-todo-app
+    curl -s https://hub.docker.com/v2/repositories/ducvu1995/getting-started-todo-app/tags/ | jq '.results[].name'
+    => "latest"
+
+5. Recap
+    Before you move on, take a moment and reflect on what happened here. Within a few moments, 
+    you were able to build a container image that packages your application and push it to Docker Hub.
+    Going forward, you’ll want to remember that:
+
+    Docker Hub is the go-to registry for finding trusted content. 
+    Docker provides a collection of trusted content, composed of Docker Official Images, 
+    Docker Verified Publishers, and Docker Sponsored Open Source Software, 
+    to use directly or as bases for your own images.
+
+    Docker Hub provides a marketplace to distribute your own applications. 
+    Anyone can create an account and distribute images. 
+    While you are publicly distributing the image you created, 
+    private repositories can ensure your images are accessible to only authorized users.

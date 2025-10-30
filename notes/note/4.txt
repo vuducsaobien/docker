@@ -1,0 +1,63 @@
+Create Personal Access token để dùng API Docker Hub:
+https://app.docker.com/accounts/ducvu1995
+https://app.docker.com/accounts/ducvu1995/settings/account-information
+https://app.docker.com/accounts/ducvu1995/settings/personal-access-tokens
+
+Public Repo Read-only - API
+
+Kiểm tra các Tag trong 1 REPOSITORY
+    1. curl -s https://hub.docker.com/v2/repositories/ducvu1995/getting-started-todo-app/tags/ | jq '.results[].name'
+        => "latest"
+    2. Gọi API: https://hub.docker.com/v2/repositories/ducvu1995/getting-started-todo-app/tags?page_size=100
+        {
+            "count": 1,
+            "next": null,
+            "previous": null,
+            "results": [
+                {
+                    "creator": 31920066,
+                    "id": 1001476308,
+                    "images": [
+                        {
+                            "architecture": "arm64",
+                            "features": "",
+                            "variant": null,
+                            "digest": "sha256:4ec005b35b1cecabd2de6eedc519efc160466061181e40c9d8407644c415e613",
+                            "os": "linux",
+                            "os_features": "",
+                            "os_version": null,
+                            "size": 422476442,
+                            "status": "active",
+                            "last_pulled": "2025-10-30T15:40:42.657992202Z",
+                            "last_pushed": "2025-10-30T15:40:40.34999751Z"
+                        },
+                        {
+                            "architecture": "unknown",
+                            "features": "",
+                            "variant": null,
+                            "digest": "sha256:e40f2c914c8c535fbf407359ef8288d2e04dc499fb1a067f7771266ee49ca97a",
+                            "os": "unknown",
+                            "os_features": "",
+                            "os_version": null,
+                            "size": 1237,
+                            "status": "active",
+                            "last_pulled": "2025-10-30T15:40:42.658760057Z",
+                            "last_pushed": "2025-10-30T15:40:40.350392722Z"
+                        }
+                    ],
+                    "last_updated": "2025-10-30T15:40:41.630238Z",
+                    "last_updater": 31920066,
+                    "last_updater_username": "ducvu1995",
+                    "name": "latest",
+                    "repository": 29007964,
+                    "full_size": 422476442,
+                    "v2": true,
+                    "tag_status": "active",
+                    "tag_last_pulled": "2025-10-30T15:40:50.788565861Z",
+                    "tag_last_pushed": "2025-10-30T15:40:41.630238Z",
+                    "media_type": "application/vnd.oci.image.index.v1+json",
+                    "content_type": "image",
+                    "digest": "sha256:85b50079fbc11a905656cd80e14f32a8b3e30ae6cdbd13eb5f24f98d1bcb8328"
+                }
+            ]
+        }

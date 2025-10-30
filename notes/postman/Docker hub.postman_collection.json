@@ -1,0 +1,292 @@
+{
+	"info": {
+		"_postman_id": "7f055d11-580c-4ec4-b64d-bb5dff0b2f50",
+		"name": "Docker hub",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18938227"
+	},
+	"item": [
+		{
+			"name": "All Tags",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "ducvu1995",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "dckr_pat_qKNSar3v8byiPksu3eJjicE8IRc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://hub.docker.com/v2/repositories/ducvu1995/getting-started-todo-app/tags?page_size=100",
+					"protocol": "https",
+					"host": [
+						"hub",
+						"docker",
+						"com"
+					],
+					"path": [
+						"v2",
+						"repositories",
+						"ducvu1995",
+						"getting-started-todo-app",
+						"tags"
+					],
+					"query": [
+						{
+							"key": "page_size",
+							"value": "100"
+						}
+					]
+				},
+				"description": "Generated from cURL: curl -s -u \"${DOCKERHUB_USERNAME}:${DOCKERHUB_TOKEN}\" \\\n\"https://hub.docker.com/v2/repositories/${DOCKERHUB_USERNAME}/${REPO}/tags?page_size=100\" \\\n| jq '.results[] | {name: .name, last_updated: .last_updated, digest: .digest, size: .full_size}'\n"
+			},
+			"response": [
+				{
+					"name": "All Tags",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://hub.docker.com/v2/repositories/ducvu1995/getting-started-todo-app/tags?page_size=100",
+							"protocol": "https",
+							"host": [
+								"hub",
+								"docker",
+								"com"
+							],
+							"path": [
+								"v2",
+								"repositories",
+								"ducvu1995",
+								"getting-started-todo-app",
+								"tags"
+							],
+							"query": [
+								{
+									"key": "page_size",
+									"value": "100"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "Date",
+							"value": "Thu, 30 Oct 2025 16:27:09 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "x-ratelimit-limit",
+							"value": "180"
+						},
+						{
+							"key": "x-ratelimit-reset",
+							"value": "1761841689"
+						},
+						{
+							"key": "x-ratelimit-remaining",
+							"value": "180"
+						},
+						{
+							"key": "x-ratelimit-ip",
+							"value": "14.226.236.154"
+						},
+						{
+							"key": "x-trace-id",
+							"value": "876921980d261b27af3f6e8aa0fdc425"
+						},
+						{
+							"key": "x-frame-options",
+							"value": "deny"
+						},
+						{
+							"key": "x-content-type-options",
+							"value": "nosniff"
+						},
+						{
+							"key": "x-xss-protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "content-encoding",
+							"value": "gzip"
+						},
+						{
+							"key": "strict-transport-security",
+							"value": "max-age=31536000"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"count\": 1,\n    \"next\": null,\n    \"previous\": null,\n    \"results\": [\n        {\n            \"creator\": 31920066,\n            \"id\": 1001476308,\n            \"images\": [\n                {\n                    \"architecture\": \"arm64\",\n                    \"features\": \"\",\n                    \"variant\": null,\n                    \"digest\": \"sha256:4ec005b35b1cecabd2de6eedc519efc160466061181e40c9d8407644c415e613\",\n                    \"os\": \"linux\",\n                    \"os_features\": \"\",\n                    \"os_version\": null,\n                    \"size\": 422476442,\n                    \"status\": \"active\",\n                    \"last_pulled\": \"2025-10-30T15:40:42.657992202Z\",\n                    \"last_pushed\": \"2025-10-30T15:40:40.34999751Z\"\n                },\n                {\n                    \"architecture\": \"unknown\",\n                    \"features\": \"\",\n                    \"variant\": null,\n                    \"digest\": \"sha256:e40f2c914c8c535fbf407359ef8288d2e04dc499fb1a067f7771266ee49ca97a\",\n                    \"os\": \"unknown\",\n                    \"os_features\": \"\",\n                    \"os_version\": null,\n                    \"size\": 1237,\n                    \"status\": \"active\",\n                    \"last_pulled\": \"2025-10-30T15:40:42.658760057Z\",\n                    \"last_pushed\": \"2025-10-30T15:40:40.350392722Z\"\n                }\n            ],\n            \"last_updated\": \"2025-10-30T15:40:41.630238Z\",\n            \"last_updater\": 31920066,\n            \"last_updater_username\": \"ducvu1995\",\n            \"name\": \"latest\",\n            \"repository\": 29007964,\n            \"full_size\": 422476442,\n            \"v2\": true,\n            \"tag_status\": \"active\",\n            \"tag_last_pulled\": \"2025-10-30T15:40:50.788565861Z\",\n            \"tag_last_pushed\": \"2025-10-30T15:40:41.630238Z\",\n            \"media_type\": \"application/vnd.oci.image.index.v1+json\",\n            \"content_type\": \"image\",\n            \"digest\": \"sha256:85b50079fbc11a905656cd80e14f32a8b3e30ae6cdbd13eb5f24f98d1bcb8328\"\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Detail tag",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "ducvu1995",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "dckr_pat_qKNSar3v8byiPksu3eJjicE8IRc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://hub.docker.com/v2/repositories/ducvu1995/getting-started-todo-app/tags/latest",
+					"protocol": "https",
+					"host": [
+						"hub",
+						"docker",
+						"com"
+					],
+					"path": [
+						"v2",
+						"repositories",
+						"ducvu1995",
+						"getting-started-todo-app",
+						"tags",
+						"latest"
+					],
+					"query": [
+						{
+							"key": "page_size",
+							"value": "100",
+							"disabled": true
+						}
+					]
+				},
+				"description": "Generated from cURL: curl -s -u \"${DOCKERHUB_USERNAME}:${DOCKERHUB_TOKEN}\" \\\n\"https://hub.docker.com/v2/repositories/${DOCKERHUB_USERNAME}/${REPO}/tags?page_size=100\" \\\n| jq '.results[] | {name: .name, last_updated: .last_updated, digest: .digest, size: .full_size}'\n"
+			},
+			"response": [
+				{
+					"name": "Detail tag",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://hub.docker.com/v2/repositories/ducvu1995/getting-started-todo-app/tags/latest",
+							"protocol": "https",
+							"host": [
+								"hub",
+								"docker",
+								"com"
+							],
+							"path": [
+								"v2",
+								"repositories",
+								"ducvu1995",
+								"getting-started-todo-app",
+								"tags",
+								"latest"
+							],
+							"query": [
+								{
+									"key": "page_size",
+									"value": "100",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "Date",
+							"value": "Thu, 30 Oct 2025 16:31:54 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "x-ratelimit-limit",
+							"value": "180"
+						},
+						{
+							"key": "x-ratelimit-reset",
+							"value": "1761841974"
+						},
+						{
+							"key": "x-ratelimit-remaining",
+							"value": "179"
+						},
+						{
+							"key": "x-ratelimit-ip",
+							"value": "14.226.236.154"
+						},
+						{
+							"key": "x-trace-id",
+							"value": "dc2de6bba84d9c3c8a2196e331dc72ab"
+						},
+						{
+							"key": "x-frame-options",
+							"value": "deny"
+						},
+						{
+							"key": "x-content-type-options",
+							"value": "nosniff"
+						},
+						{
+							"key": "x-xss-protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "content-encoding",
+							"value": "gzip"
+						},
+						{
+							"key": "strict-transport-security",
+							"value": "max-age=31536000"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"creator\": 31920066,\n    \"id\": 1001476308,\n    \"images\": [\n        {\n            \"architecture\": \"arm64\",\n            \"features\": \"\",\n            \"variant\": null,\n            \"digest\": \"sha256:4ec005b35b1cecabd2de6eedc519efc160466061181e40c9d8407644c415e613\",\n            \"os\": \"linux\",\n            \"os_features\": \"\",\n            \"os_version\": null,\n            \"size\": 422476442,\n            \"status\": \"active\",\n            \"last_pulled\": \"2025-10-30T15:40:42.657992202Z\",\n            \"last_pushed\": \"2025-10-30T15:40:40.34999751Z\"\n        },\n        {\n            \"architecture\": \"unknown\",\n            \"features\": \"\",\n            \"variant\": null,\n            \"digest\": \"sha256:e40f2c914c8c535fbf407359ef8288d2e04dc499fb1a067f7771266ee49ca97a\",\n            \"os\": \"unknown\",\n            \"os_features\": \"\",\n            \"os_version\": null,\n            \"size\": 1237,\n            \"status\": \"active\",\n            \"last_pulled\": \"2025-10-30T15:40:42.658760057Z\",\n            \"last_pushed\": \"2025-10-30T15:40:40.350392722Z\"\n        }\n    ],\n    \"last_updated\": \"2025-10-30T15:40:41.630238Z\",\n    \"last_updater\": 31920066,\n    \"last_updater_username\": \"ducvu1995\",\n    \"name\": \"latest\",\n    \"repository\": 29007964,\n    \"full_size\": 422476442,\n    \"v2\": true,\n    \"tag_status\": \"active\",\n    \"tag_last_pulled\": \"2025-10-30T15:40:42.658760057Z\",\n    \"tag_last_pushed\": \"2025-10-30T15:40:41.630238Z\",\n    \"media_type\": \"application/vnd.oci.image.index.v1+json\",\n    \"content_type\": \"image\",\n    \"digest\": \"sha256:85b50079fbc11a905656cd80e14f32a8b3e30ae6cdbd13eb5f24f98d1bcb8328\"\n}"
+				}
+			]
+		}
+	]
+}
