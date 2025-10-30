@@ -10,7 +10,7 @@
 			"name": "All Tags",
 			"request": {
 				"auth": {
-					"type": "basic",
+					"typer": "basic",
 					"basic": [
 						{
 							"key": "username",
@@ -19,7 +19,7 @@
 						},
 						{
 							"key": "password",
-							"value": "dckr_pat_qKNSar3v8byiPksu3eJjicE8IRc",
+							"value": "personal_access_token",
 							"type": "string"
 						}
 					]
@@ -158,7 +158,7 @@
 						},
 						{
 							"key": "password",
-							"value": "dckr_pat_qKNSar3v8byiPksu3eJjicE8IRc",
+							"value": "personal_access_token",
 							"type": "string"
 						}
 					]
