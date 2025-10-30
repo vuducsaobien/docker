@@ -1,0 +1,7 @@
+- docker ps
+CONTAINER ID   IMAGE                                   COMMAND                  CREATED         STATUS                   PORTS                                 NAMES
+ad52c2c36620   getting-started-todo-app-main-backend   "docker-entrypoint.s…"   7 minutes ago   Up 7 minutes                                                   getting-started-todo-app-main-backend-1
+1cc6931b498e   phpmyadmin                              "/docker-entrypoint.…"   7 minutes ago   Up 7 minutes             80/tcp                                getting-started-todo-app-main-phpmyadmin-1
+e5621a8f4cb5   getting-started-todo-app-main-client    "docker-entrypoint.s…"   7 minutes ago   Up 7 minutes                                                   getting-started-todo-app-main-client-1
+54d90f1d7457   traefik:v3.4                            "/entrypoint.sh --pr…"   7 minutes ago   Up 7 minutes             0.0.0.0:80->80/tcp, [::]:80->80/tcp   getting-started-todo-app-main-proxy-1
+51a853229477   mysql:9.3                               "docker-entrypoint.s…"   7 minutes ago   Up 7 minutes (healthy)   3306/tcp, 33060/tcp                   getting-started-todo-app-main-mysql-1
