@@ -1,0 +1,63 @@
+- 1. Xoá tất cả container (Nếu không có container nào → nó không chạy lệnh → không báo lỗi.)
+    docker ps -aq | xargs -r docker rm -f
+
+- 2. Xoá tất cả images
+    docker images -aq | xargs -r docker rmi -f
+
+- 3. Xoá tất cả volumes
+    docker volume ls -q | xargs -r docker volume rm -f
+
+- 4. Xoá tất cả networks (trừ mặc định)
+    docker network rm $(docker network ls | grep -v "bridge\|host\|none" | awk '{print $1}')
+    docker network ls | grep -v "bridge\|host\|none" | awk '{print $1}' | xargs -r docker network rm
+
+- 5. Xoá toàn bộ Build cache (BuildKit)
+    Không tìm được command để xoá tất cả build trong Build > Build History
+    => Phải xoá tất cả các Build = GUI Docker Desktop
+
+- 6. Liệt kê tất cả mạng Docker.
+    <docker network ls>
+        NETWORK ID     NAME      DRIVER    SCOPE
+        5fe5907c34ed   bridge    bridge    local
+        0efb45f24983   host      host      local
+        d99401f9cabb   none      null      local
+
+- 7. Thống kê dung lượng chi tiết (images, containers, volumes, build cache).
+    docker system df -v
+
+        Images space usage:
+        REPOSITORY   TAG       IMAGE ID   CREATED   SIZE      SHARED SIZE   UNIQUE SIZE   CONTAINERS
+
+        Containers space usage:
+        CONTAINER ID   IMAGE     COMMAND   LOCAL VOLUMES   SIZE      CREATED   STATUS    NAMES
+
+        Local Volumes space usage:
+        VOLUME NAME   LINKS     SIZE
+
+        Build cache usage: 0B
+        CACHE ID   CACHE TYPE   SIZE      CREATED   LAST USED   USAGE     SHARED
+
+- 8. Pull 1 image về 
+    docker pull docker/welcome-to-docker
+
+- 9. Tạo container từ image:
+    - docker run [OPTIONS] <image-name>
+    - docker run -d -p 8080:80 docker/welcome-to-docker
+        1. Tải image docker/welcome-to-docker từ Docker Hub (nếu chưa có sẵn).
+        2. Tạo một container mới từ image đó.
+        3. Chạy web server nhỏ bên trong container (thường là Nginx hoặc app Node.js demo).
+        4. Container này lắng nghe port 80 bên trong, được bạn map ra 8080 bên ngoài.
+
+- 10. Tạo và chạy một container mới từ image đã chỉ định.
+    docker run <the-container-id-or-container-name>
+
+- 9. Dừng container (nếu đang chạy)
+    docker stop <the-container-id-or-container-name>
+
+- 10. Chạy lại (start lại) container cũ
+    docker start (sử dụng lại container cũ, giữ nguyên volume, network, log, v.v.)
+
+- 11. Nếu muốn “restart” trong một lệnh duy nhất:
+    docker restart (= `docker stop` and `docker start`)
+
+
