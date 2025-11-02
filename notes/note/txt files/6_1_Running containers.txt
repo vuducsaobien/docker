@@ -1,0 +1,51 @@
+https://docs.docker.com/engine/containers/run/
+This page details how to use the `docker run` command to run containers.
+- General form
+    `docker run [OPTIONS] IMAGE[:TAG|@DIGEST] [COMMAND] [ARG...]`
+    The `docker run` command must specify an `image reference` to create the container from.
+
+- Image references
+    The image reference is the name and version of the image. 
+    You can use the image reference to create or run a container based on an image.
+        + docker run IMAGE[:TAG][@DIGEST]
+        + docker create IMAGE[:TAG][@DIGEST]
+
+Filesystem mounts
+    - By default, the data in a container is stored in an ephemeral, 
+    writable container layer. Removing the container also removes its data. 
+    If you want to use persistent data with containers, 
+    you can use filesystem mounts to store the data persistently on the host system. 
+    Filesystem mounts can also let you share data between containers and the host.
+
+    - Docker supports two main categories of mounts:
+        + Volume mounts
+        + Bind mounts
+    - Volume mounts are great for persistently storing data for containers, 
+    and for sharing data between containers. 
+    Bind mounts, on the other hand, are for sharing data between a container and the host.
+
+    - You can add a filesystem mount to a container
+    using the --mount flag for the docker run command.
+
+    - The following sections show basic examples of how to create volumes and bind mounts. 
+    For more in-depth examples and descriptions, 
+    refer to the section of the storage section in the documentation.
+
+Volume mounts
+    To create a volume mount:
+    `docker run --mount source=<VOLUME_NAME>,target=[PATH] [IMAGE] [COMMAND...]`
+        The `--mount` flag takes two parameters in this case: `source` and `target`. 
+        The value for the `source` parameter is the name of the volume. 
+        The value of `target` is the mount location of the volume inside the container. 
+        Once you've created the volume, any data you write to the volume is persisted, 
+        even if you stop or remove the container:
+
+        docker run --rm --mount source=my_volume,target=/foo busybox \
+        echo "hello, volume!" > /foo/hello.txt
+        docker run --mount source=my_volume,target=/bar busybox
+        cat /bar/hello.txt
+        hello, volume!
+
+    
+
+

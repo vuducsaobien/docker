@@ -7,19 +7,545 @@
 	},
 	"item": [
 		{
+			"name": "Registry",
+			"item": [
+				{
+					"name": "1 - get token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const json = JSON.parse(responseBody);",
+									"pm.environment.set(\"registry_token\", json.access_token)"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://auth.docker.io/token?service=registry.docker.io&scope=repository:library/{{image_want_get_digest}}:pull",
+							"protocol": "https",
+							"host": [
+								"auth",
+								"docker",
+								"io"
+							],
+							"path": [
+								"token"
+							],
+							"query": [
+								{
+									"key": "service",
+									"value": "registry.docker.io"
+								},
+								{
+									"key": "scope",
+									"value": "repository:library/{{image_want_get_digest}}:pull"
+								}
+							]
+						},
+						"description": "Generated from cURL: curl -s \\\n  \"https://auth.docker.io/token?service=registry.docker.io&scope=repository:library/alpine:pull\"\n"
+					},
+					"response": [
+						{
+							"name": "get token",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://auth.docker.io/token?service=registry.docker.io&scope=repository:library/{{image_want_get_digest}}:pull",
+									"protocol": "https",
+									"host": [
+										"auth",
+										"docker",
+										"io"
+									],
+									"path": [
+										"token"
+									],
+									"query": [
+										{
+											"key": "service",
+											"value": "registry.docker.io"
+										},
+										{
+											"key": "scope",
+											"value": "repository:library/{{image_want_get_digest}}:pull"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sat, 01 Nov 2025 14:31:27 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-trace-id",
+									"value": "b679ba79af1917acaf05259475f5d6e2"
+								},
+								{
+									"key": "x-trace-sampled",
+									"value": "false"
+								},
+								{
+									"key": "strict-transport-security",
+									"value": "max-age=31536000"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"token\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsIng1YyI6WyJNSUlFRmpDQ0F2NmdBd0lCQWdJVU9yTFd5UVpxMmFuZXd6WnhYN1JLbHQ3bDVUTXdEUVlKS29aSWh2Y05BUUVMQlFBd2dZWXhDekFKQmdOVkJBWVRBbFZUTVJNd0VRWURWUVFJRXdwRFlXeHBabTl5Ym1saE1SSXdFQVlEVlFRSEV3bFFZV3h2SUVGc2RHOHhGVEFUQmdOVkJBb1RERVJ2WTJ0bGNpd2dTVzVqTGpFVU1CSUdBMVVFQ3hNTFJXNW5hVzVsWlhKcGJtY3hJVEFmQmdOVkJBTVRHRVJ2WTJ0bGNpd2dTVzVqTGlCRmJtY2dVbTl2ZENCRFFUQWVGdzB5TlRBNU1qVXdNRE13TURCYUZ3MHlOakE1TWpVd01ETXdNREJhTUlHRk1Rc3dDUVlEVlFRR0V3SlZVekVUTUJFR0ExVUVDQk1LUTJGc2FXWnZjbTVwWVRFU01CQUdBMVVFQnhNSlVHRnNieUJCYkhSdk1SVXdFd1lEVlFRS0V3eEViMk5yWlhJc0lFbHVZeTR4RkRBU0JnTlZCQXNUQzBWdVoybHVaV1Z5YVc1bk1TQXdIZ1lEVlFRREV4ZEViMk5yWlhJc0lFbHVZeTRnUlc1bklFcFhWQ0JEUVRDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBTnRzeXZ4V2w2a04yYlBGd1o2dVVoS1dzQStZMW5FMFZvcHdZRzFtaDFjeGdYS0pZMWdsb0ZXeHl2T3JCWTcxQ1dHOHBONkhlSGt0YUR4cVE3QnphSk9tcWJiNkc4cUFnZFIwN3V2RjliTVpEV2RlbEo0YnJiYlhCTFozNE5GMHJmc0FpbVBuQWRJMFZwL1FLYmdhS3VpZ0VMUnEwMkZobmpubFRpK0hNZk1VYU5oZmI0Y1JIWGx3Z3lqaXJucDhMN3N5ZzRxVE1jQ1lmaFp2WWJ2SzYyb3J5a2c5UGg3aEJPT25rMkVtN2pBaC9CaFVjMU1BSFl0cHhWSHpzc0ZzQm9OaUhhRkg0ODdwK3ZSOUVRVlE2OXgveUVpS3JSV3NrRDBaZThRTDN5MVpTSm5zNHQvMmhEVEVNMWVJanJpQm9SYzlkc3dSTUpvMHhLejB0bkgvblE4Q0F3RUFBYU43TUhrd0RnWURWUjBQQVFIL0JBUURBZ0dtTUJNR0ExVWRKUVFNTUFvR0NDc0dBUVVGQndNQk1CSUdBMVVkRXdFQi93UUlNQVlCQWY4Q0FRQXdIUVlEVlIwT0JCWUVGR3FLM09QdjlXMTNqVXZ5TS82Mng3RjZlWGJaTUI4R0ExVWRJd1FZTUJhQUZDNjBVUE5lQmtvZ1kyMnRYUGNCTUhGdkczQ3NNQTBHQ1NxR1NJYjNEUUVCQ3dVQUE0SUJBUUNFOUxsMitqT2tIcHdOTlNEYnpYbEJrbmlxamE4M0ZjZnNQUlVvV2hhbkN4TitxdVgreCsyc3hvSDJacXRMclZsaGxoZlEwTmRzNU13aDZZdmFMM2xvdVBuS1hYbFJHK3lHYjFlVVRpa0RVSHRtMVJuYkJlSU9xaUxrZUxkZFI2MkMzQUFQOVBCR2NtVGd1cjk5RUNtNFpHNUJLNC9kUXRrbGl3NVBiSEtvMVBtRDJldjV0T243T1FmRzFoN3NxTTRZVkRxbHZYd29zdWFzOE54cDNjK2Iwb0N1dzUvajZBUXdMWENjR1l0eHlhc2x3UFozbEpHWGdxaUpZRGJ0K3JhUmUvSXl5dmY4UTdIUHNzZ29VTk82bER5L05PclRjTlFjOUpsanl0ZlRQQ3NFK3Ewb1E2clRqWFQzL0dNSFdvYm1oaGVhanp2NXF3Mm5LQ29ENGtHayJdfQ.eyJhY2Nlc3MiOlt7ImFjdGlvbnMiOlsicHVsbCJdLCJuYW1lIjoibGlicmFyeS9hbHBpbmUiLCJwYXJhbWV0ZXJzIjp7InB1bGxfbGltaXQiOiIxMDAiLCJwdWxsX2xpbWl0X2ludGVydmFsIjoiMjE2MDAifSwidHlwZSI6InJlcG9zaXRvcnkifV0sImF1ZCI6InJlZ2lzdHJ5LmRvY2tlci5pbyIsImV4cCI6MTc2MjAwNzc4NywiaWF0IjoxNzYyMDA3NDg3LCJpc3MiOiJhdXRoLmRvY2tlci5pbyIsImp0aSI6ImRja3JfanRpXzNpNE5oVkRITHk2X3ZrYWY1ZDhBMGZCVF9hST0iLCJuYmYiOjE3NjIwMDcxODcsInN1YiI6IiJ9.AsieL1dnNlyo-jyTFXdqXeVxRSEnXr3qrIDd5xVHKRJ5aEgxwMzRyMukzAZmQA3lmdaGA8nOKCJF_zxoh-VxN9pv_ORSPxECejtF3tWOI8UAkcAHbRLJb6QkWfpdvLe5EWz1ILBlTVpUOta9mWDvteS36eYV7V00aJlfERgqgag9B-yUE7C1rVDAMt3_J-VvCHTW2sKmpK8EwBbg6ZdZbEVqvqMjXBiicK85PU_Nu-xaxXHbiGakUgQYyzKmHTtBDc_TTS3tT02oN9VVa-FMUaSDXrlTyj66usEJNV7KHpq4JyhYTWfzsMALBl7oG53XW6omS0YRnAWYR40St5bkpg\",\n    \"access_token\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsIng1YyI6WyJNSUlFRmpDQ0F2NmdBd0lCQWdJVU9yTFd5UVpxMmFuZXd6WnhYN1JLbHQ3bDVUTXdEUVlKS29aSWh2Y05BUUVMQlFBd2dZWXhDekFKQmdOVkJBWVRBbFZUTVJNd0VRWURWUVFJRXdwRFlXeHBabTl5Ym1saE1SSXdFQVlEVlFRSEV3bFFZV3h2SUVGc2RHOHhGVEFUQmdOVkJBb1RERVJ2WTJ0bGNpd2dTVzVqTGpFVU1CSUdBMVVFQ3hNTFJXNW5hVzVsWlhKcGJtY3hJVEFmQmdOVkJBTVRHRVJ2WTJ0bGNpd2dTVzVqTGlCRmJtY2dVbTl2ZENCRFFUQWVGdzB5TlRBNU1qVXdNRE13TURCYUZ3MHlOakE1TWpVd01ETXdNREJhTUlHRk1Rc3dDUVlEVlFRR0V3SlZVekVUTUJFR0ExVUVDQk1LUTJGc2FXWnZjbTVwWVRFU01CQUdBMVVFQnhNSlVHRnNieUJCYkhSdk1SVXdFd1lEVlFRS0V3eEViMk5yWlhJc0lFbHVZeTR4RkRBU0JnTlZCQXNUQzBWdVoybHVaV1Z5YVc1bk1TQXdIZ1lEVlFRREV4ZEViMk5yWlhJc0lFbHVZeTRnUlc1bklFcFhWQ0JEUVRDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBTnRzeXZ4V2w2a04yYlBGd1o2dVVoS1dzQStZMW5FMFZvcHdZRzFtaDFjeGdYS0pZMWdsb0ZXeHl2T3JCWTcxQ1dHOHBONkhlSGt0YUR4cVE3QnphSk9tcWJiNkc4cUFnZFIwN3V2RjliTVpEV2RlbEo0YnJiYlhCTFozNE5GMHJmc0FpbVBuQWRJMFZwL1FLYmdhS3VpZ0VMUnEwMkZobmpubFRpK0hNZk1VYU5oZmI0Y1JIWGx3Z3lqaXJucDhMN3N5ZzRxVE1jQ1lmaFp2WWJ2SzYyb3J5a2c5UGg3aEJPT25rMkVtN2pBaC9CaFVjMU1BSFl0cHhWSHpzc0ZzQm9OaUhhRkg0ODdwK3ZSOUVRVlE2OXgveUVpS3JSV3NrRDBaZThRTDN5MVpTSm5zNHQvMmhEVEVNMWVJanJpQm9SYzlkc3dSTUpvMHhLejB0bkgvblE4Q0F3RUFBYU43TUhrd0RnWURWUjBQQVFIL0JBUURBZ0dtTUJNR0ExVWRKUVFNTUFvR0NDc0dBUVVGQndNQk1CSUdBMVVkRXdFQi93UUlNQVlCQWY4Q0FRQXdIUVlEVlIwT0JCWUVGR3FLM09QdjlXMTNqVXZ5TS82Mng3RjZlWGJaTUI4R0ExVWRJd1FZTUJhQUZDNjBVUE5lQmtvZ1kyMnRYUGNCTUhGdkczQ3NNQTBHQ1NxR1NJYjNEUUVCQ3dVQUE0SUJBUUNFOUxsMitqT2tIcHdOTlNEYnpYbEJrbmlxamE4M0ZjZnNQUlVvV2hhbkN4TitxdVgreCsyc3hvSDJacXRMclZsaGxoZlEwTmRzNU13aDZZdmFMM2xvdVBuS1hYbFJHK3lHYjFlVVRpa0RVSHRtMVJuYkJlSU9xaUxrZUxkZFI2MkMzQUFQOVBCR2NtVGd1cjk5RUNtNFpHNUJLNC9kUXRrbGl3NVBiSEtvMVBtRDJldjV0T243T1FmRzFoN3NxTTRZVkRxbHZYd29zdWFzOE54cDNjK2Iwb0N1dzUvajZBUXdMWENjR1l0eHlhc2x3UFozbEpHWGdxaUpZRGJ0K3JhUmUvSXl5dmY4UTdIUHNzZ29VTk82bER5L05PclRjTlFjOUpsanl0ZlRQQ3NFK3Ewb1E2clRqWFQzL0dNSFdvYm1oaGVhanp2NXF3Mm5LQ29ENGtHayJdfQ.eyJhY2Nlc3MiOlt7ImFjdGlvbnMiOlsicHVsbCJdLCJuYW1lIjoibGlicmFyeS9hbHBpbmUiLCJwYXJhbWV0ZXJzIjp7InB1bGxfbGltaXQiOiIxMDAiLCJwdWxsX2xpbWl0X2ludGVydmFsIjoiMjE2MDAifSwidHlwZSI6InJlcG9zaXRvcnkifV0sImF1ZCI6InJlZ2lzdHJ5LmRvY2tlci5pbyIsImV4cCI6MTc2MjAwNzc4NywiaWF0IjoxNzYyMDA3NDg3LCJpc3MiOiJhdXRoLmRvY2tlci5pbyIsImp0aSI6ImRja3JfanRpXzNpNE5oVkRITHk2X3ZrYWY1ZDhBMGZCVF9hST0iLCJuYmYiOjE3NjIwMDcxODcsInN1YiI6IiJ9.AsieL1dnNlyo-jyTFXdqXeVxRSEnXr3qrIDd5xVHKRJ5aEgxwMzRyMukzAZmQA3lmdaGA8nOKCJF_zxoh-VxN9pv_ORSPxECejtF3tWOI8UAkcAHbRLJb6QkWfpdvLe5EWz1ILBlTVpUOta9mWDvteS36eYV7V00aJlfERgqgag9B-yUE7C1rVDAMt3_J-VvCHTW2sKmpK8EwBbg6ZdZbEVqvqMjXBiicK85PU_Nu-xaxXHbiGakUgQYyzKmHTtBDc_TTS3tT02oN9VVa-FMUaSDXrlTyj66usEJNV7KHpq4JyhYTWfzsMALBl7oG53XW6omS0YRnAWYR40St5bkpg\",\n    \"expires_in\": 300,\n    \"issued_at\": \"2025-11-01T14:31:27.71889421Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "2 - is image v2 ?",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const digest = pm.response.headers.get(\"docker-content-digest\");",
+									"pm.environment.set(\"digest_image\", digest);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "HEAD",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{registry_token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/vnd.docker.distribution.manifest.v2+json"
+							}
+						],
+						"url": {
+							"raw": "https://registry-1.docker.io/v2/library/{{image_want_get_digest}}/manifests/latest",
+							"protocol": "https",
+							"host": [
+								"registry-1",
+								"docker",
+								"io"
+							],
+							"path": [
+								"v2",
+								"library",
+								"{{image_want_get_digest}}",
+								"manifests",
+								"latest"
+							]
+						},
+						"description": "Generated from cURL: curl -s -I \\\n  -H \"Authorization: Bearer <token_của_bạn>\" \\\n  -H \"Accept: application/vnd.docker.distribution.manifest.v2+json\" \\\n  https://registry-1.docker.io/v2/library/alpine/manifests/latest\n"
+					},
+					"response": [
+						{
+							"name": "is v2 ?",
+							"originalRequest": {
+								"method": "HEAD",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{registry_token}}"
+									},
+									{
+										"key": "Accept",
+										"value": "application/vnd.docker.distribution.manifest.v2+json"
+									}
+								],
+								"url": {
+									"raw": "https://registry-1.docker.io/v2/library/{{image_want_get_digest}}/manifests/latest",
+									"protocol": "https",
+									"host": [
+										"registry-1",
+										"docker",
+										"io"
+									],
+									"path": [
+										"v2",
+										"library",
+										"{{image_want_get_digest}}",
+										"manifests",
+										"latest"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sat, 01 Nov 2025 14:31:30 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/vnd.oci.image.index.v1+json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "9218"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "docker-content-digest",
+									"value": "sha256:4b7ce07002c69e8f3d704a9c5d6fd3053be500b7f1c69fc0d80990c2ad8dd412"
+								},
+								{
+									"key": "docker-distribution-api-version",
+									"value": "registry/2.0"
+								},
+								{
+									"key": "etag",
+									"value": "\"sha256:4b7ce07002c69e8f3d704a9c5d6fd3053be500b7f1c69fc0d80990c2ad8dd412\""
+								},
+								{
+									"key": "strict-transport-security",
+									"value": "max-age=31536000"
+								},
+								{
+									"key": "docker-ratelimit-source",
+									"value": "14.226.236.154"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "3 - Get list tag from digest",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const digest = pm.response.headers.get(\"docker-content-digest\");",
+									"pm.environment.set(\"digest_image\", digest);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{registry_token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/vnd.docker.distribution.manifest.v2+json"
+							}
+						],
+						"url": {
+							"raw": "https://registry.hub.docker.com/v2/library/{{image_want_get_digest}}/tags/list",
+							"protocol": "https",
+							"host": [
+								"registry",
+								"hub",
+								"docker",
+								"com"
+							],
+							"path": [
+								"v2",
+								"library",
+								"{{image_want_get_digest}}",
+								"tags",
+								"list"
+							]
+						},
+						"description": "Generated from cURL: curl -s -I \\\n  -H \"Authorization: Bearer <token_của_bạn>\" \\\n  -H \"Accept: application/vnd.docker.distribution.manifest.v2+json\" \\\n  https://registry-1.docker.io/v2/library/alpine/manifests/latest\n"
+					},
+					"response": [
+						{
+							"name": "Get list tag from degist",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{registry_token}}"
+									},
+									{
+										"key": "Accept",
+										"value": "application/vnd.docker.distribution.manifest.v2+json"
+									}
+								],
+								"url": {
+									"raw": "https://registry.hub.docker.com/v2/library/{{image_want_get_digest}}/tags/list",
+									"protocol": "https",
+									"host": [
+										"registry",
+										"hub",
+										"docker",
+										"com"
+									],
+									"path": [
+										"v2",
+										"library",
+										"{{image_want_get_digest}}",
+										"tags",
+										"list"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sat, 01 Nov 2025 14:46:41 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1857"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "docker-distribution-api-version",
+									"value": "registry/2.0"
+								},
+								{
+									"key": "strict-transport-security",
+									"value": "max-age=31536000"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"name\": \"library/alpine\",\n    \"tags\": [\n        \"2.6\",\n        \"2.7\",\n        \"20190228\",\n        \"20190408\",\n        \"20190508\",\n        \"20190707\",\n        \"20190809\",\n        \"20190925\",\n        \"20191114\",\n        \"20191219\",\n        \"20200122\",\n        \"20200319\",\n        \"20200428\",\n        \"20200626\",\n        \"20200917\",\n        \"20201218\",\n        \"20210212\",\n        \"20210730\",\n        \"20210804\",\n        \"20220316\",\n        \"20220328\",\n        \"20220715\",\n        \"20221110\",\n        \"20230208\",\n        \"20230329\",\n        \"20230901\",\n        \"20231219\",\n        \"20240315\",\n        \"20240329\",\n        \"20240606\",\n        \"20240807\",\n        \"20240923\",\n        \"20250108\",\n        \"3\",\n        \"3.1\",\n        \"3.10\",\n        \"3.10.0\",\n        \"3.10.1\",\n        \"3.10.2\",\n        \"3.10.3\",\n        \"3.10.4\",\n        \"3.10.5\",\n        \"3.10.6\",\n        \"3.10.7\",\n        \"3.10.8\",\n        \"3.10.9\",\n        \"3.11\",\n        \"3.11.0\",\n        \"3.11.10\",\n        \"3.11.11\",\n        \"3.11.12\",\n        \"3.11.13\",\n        \"3.11.2\",\n        \"3.11.3\",\n        \"3.11.5\",\n        \"3.11.6\",\n        \"3.11.7\",\n        \"3.11.8\",\n        \"3.11.9\",\n        \"3.12\",\n        \"3.12.0\",\n        \"3.12.1\",\n        \"3.12.10\",\n        \"3.12.11\",\n        \"3.12.12\",\n        \"3.12.2\",\n        \"3.12.3\",\n        \"3.12.4\",\n        \"3.12.5\",\n        \"3.12.6\",\n        \"3.12.7\",\n        \"3.12.8\",\n        \"3.12.9\",\n        \"3.13\",\n        \"3.13.0\",\n        \"3.13.1\",\n        \"3.13.10\",\n        \"3.13.11\",\n        \"3.13.12\",\n        \"3.13.2\",\n        \"3.13.3\",\n        \"3.13.4\",\n        \"3.13.5\",\n        \"3.13.6\",\n        \"3.13.7\",\n        \"3.13.8\",\n        \"3.13.9\",\n        \"3.14\",\n        \"3.14.0\",\n        \"3.14.1\",\n        \"3.14.10\",\n        \"3.14.2\",\n        \"3.14.3\",\n        \"3.14.4\",\n        \"3.14.5\",\n        \"3.14.6\",\n        \"3.14.7\",\n        \"3.14.8\",\n        \"3.14.9\",\n        \"3.15\",\n        \"3.15.0\",\n        \"3.15.0-rc.4\",\n        \"3.15.1\",\n        \"3.15.10\",\n        \"3.15.11\",\n        \"3.15.2\",\n        \"3.15.3\",\n        \"3.15.4\",\n        \"3.15.5\",\n        \"3.15.6\",\n        \"3.15.7\",\n        \"3.15.8\",\n        \"3.15.9\",\n        \"3.16\",\n        \"3.16.0\",\n        \"3.16.1\",\n        \"3.16.2\",\n        \"3.16.3\",\n        \"3.16.4\",\n        \"3.16.5\",\n        \"3.16.6\",\n        \"3.16.7\",\n        \"3.16.8\",\n        \"3.16.9\",\n        \"3.17\",\n        \"3.17.0\",\n        \"3.17.0_rc1\",\n        \"3.17.1\",\n        \"3.17.10\",\n        \"3.17.2\",\n        \"3.17.3\",\n        \"3.17.4\",\n        \"3.17.5\",\n        \"3.17.6\",\n        \"3.17.7\",\n        \"3.17.8\",\n        \"3.17.9\",\n        \"3.18\",\n        \"3.18.0\",\n        \"3.18.10\",\n        \"3.18.11\",\n        \"3.18.12\",\n        \"3.18.2\",\n        \"3.18.3\",\n        \"3.18.4\",\n        \"3.18.5\",\n        \"3.18.6\",\n        \"3.18.7\",\n        \"3.18.8\",\n        \"3.18.9\",\n        \"3.19\",\n        \"3.19.0\",\n        \"3.19.1\",\n        \"3.19.2\",\n        \"3.19.3\",\n        \"3.19.4\",\n        \"3.19.5\",\n        \"3.19.6\",\n        \"3.19.7\",\n        \"3.19.8\",\n        \"3.19.9\",\n        \"3.2\",\n        \"3.20\",\n        \"3.20.0\",\n        \"3.20.1\",\n        \"3.20.2\",\n        \"3.20.3\",\n        \"3.20.4\",\n        \"3.20.5\",\n        \"3.20.6\",\n        \"3.20.7\",\n        \"3.20.8\",\n        \"3.21\",\n        \"3.21.0\",\n        \"3.21.1\",\n        \"3.21.2\",\n        \"3.21.3\",\n        \"3.21.4\",\n        \"3.21.5\",\n        \"3.22\",\n        \"3.22.0\",\n        \"3.22.1\",\n        \"3.22.2\",\n        \"3.3\",\n        \"3.4\",\n        \"3.5\",\n        \"3.6\",\n        \"3.6.5\",\n        \"3.7\",\n        \"3.7.3\",\n        \"3.8\",\n        \"3.8.4\",\n        \"3.8.5\",\n        \"3.9\",\n        \"3.9.2\",\n        \"3.9.3\",\n        \"3.9.4\",\n        \"3.9.5\",\n        \"3.9.6\",\n        \"edge\",\n        \"latest\"\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Check image with degist",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const digest = pm.response.headers.get(\"docker-content-digest\");",
+									"pm.environment.set(\"digest_image\", digest);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{registry_token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/vnd.docker.distribution.manifest.v2+json"
+							}
+						],
+						"url": {
+							"raw": "https://registry.hub.docker.com/v2/library/{{image_want_get_digest}}/manifests/edge",
+							"protocol": "https",
+							"host": [
+								"registry",
+								"hub",
+								"docker",
+								"com"
+							],
+							"path": [
+								"v2",
+								"library",
+								"{{image_want_get_digest}}",
+								"manifests",
+								"edge"
+							]
+						},
+						"description": "Generated from cURL: curl -s -I \\\n  -H \"Authorization: Bearer <token_của_bạn>\" \\\n  -H \"Accept: application/vnd.docker.distribution.manifest.v2+json\" \\\n  https://registry-1.docker.io/v2/library/alpine/manifests/latest\n"
+					},
+					"response": [
+						{
+							"name": "Get list tag from digest",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{registry_token}}"
+									},
+									{
+										"key": "Accept",
+										"value": "application/vnd.docker.distribution.manifest.v2+json"
+									}
+								],
+								"url": {
+									"raw": "https://registry.hub.docker.com/v2/library/{{image_want_get_digest}}/manifests/edge",
+									"protocol": "https",
+									"host": [
+										"registry",
+										"hub",
+										"docker",
+										"com"
+									],
+									"path": [
+										"v2",
+										"library",
+										"{{image_want_get_digest}}",
+										"manifests",
+										"edge"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sat, 01 Nov 2025 14:51:35 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/vnd.oci.image.index.v1+json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "9234"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "docker-content-digest",
+									"value": "sha256:115729ec5cb049ba6359c3ab005ac742012d92bbaa5b8bc1a878f1e8f62c0cb8"
+								},
+								{
+									"key": "docker-distribution-api-version",
+									"value": "registry/2.0"
+								},
+								{
+									"key": "etag",
+									"value": "\"sha256:115729ec5cb049ba6359c3ab005ac742012d92bbaa5b8bc1a878f1e8f62c0cb8\""
+								},
+								{
+									"key": "strict-transport-security",
+									"value": "max-age=31536000"
+								},
+								{
+									"key": "ratelimit-limit",
+									"value": "100;w=21600"
+								},
+								{
+									"key": "ratelimit-remaining",
+									"value": "100;w=21600"
+								},
+								{
+									"key": "docker-ratelimit-source",
+									"value": "14.226.236.154"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"manifests\": [\n        {\n            \"annotations\": {\n                \"com.docker.official-images.bashbrew.arch\": \"amd64\",\n                \"org.opencontainers.image.base.name\": \"scratch\",\n                \"org.opencontainers.image.created\": \"2025-01-08T17:23:15Z\",\n                \"org.opencontainers.image.revision\": \"c1f1de232c970df2285c03050ab3747b8563164f\",\n                \"org.opencontainers.image.source\": \"https://github.com/alpinelinux/docker-alpine.git#c1f1de232c970df2285c03050ab3747b8563164f:x86_64\",\n                \"org.opencontainers.image.url\": \"https://hub.docker.com/_/alpine\",\n                \"org.opencontainers.image.version\": \"20250108\"\n            },\n            \"digest\": \"sha256:20c6c97faaa88f32bbbc45696d259f0c01404a4ec2f1fa4fa8bc5aa5140443ec\",\n            \"mediaType\": \"application/vnd.oci.image.manifest.v1+json\",\n            \"platform\": {\n                \"architecture\": \"amd64\",\n                \"os\": \"linux\"\n            },\n            \"size\": 1024\n        },\n        {\n            \"annotations\": {\n                \"com.docker.official-images.bashbrew.arch\": \"amd64\",\n                \"vnd.docker.reference.digest\": \"sha256:20c6c97faaa88f32bbbc45696d259f0c01404a4ec2f1fa4fa8bc5aa5140443ec\",\n                \"vnd.docker.reference.type\": \"attestation-manifest\"\n            },\n            \"digest\": \"sha256:410edc7834c5dece534e4f1592f581b5e4554a55ebf3871663b1ed0d2c82ff84\",\n            \"mediaType\": \"application/vnd.oci.image.manifest.v1+json\",\n            \"platform\": {\n                \"architecture\": \"unknown\",\n                \"os\": \"unknown\"\n            },\n            \"size\": 838\n        },\n        {\n            \"annotations\": {\n                \"com.docker.official-images.bashbrew.arch\": \"arm32v6\",\n                \"org.opencontainers.image.base.name\": \"scratch\",\n                \"org.opencontainers.image.created\": \"2025-01-08T17:23:22Z\",\n                \"org.opencontainers.image.revision\": \"c1f1de232c970df2285c03050ab3747b8563164f\",\n                \"org.opencontainers.image.source\": \"https://github.com/alpinelinux/docker-alpine.git#c1f1de232c970df2285c03050ab3747b8563164f:armhf\",\n                \"org.opencontainers.image.url\": \"https://hub.docker.com/_/alpine\",\n                \"org.opencontainers.image.version\": \"20250108\"\n            },\n            \"digest\": \"sha256:c6708006c116cbf1d41de6faa0fcd516b92e83ec632a1cd5dff2324994b0d669\",\n            \"mediaType\": \"application/vnd.oci.image.manifest.v1+json\",\n            \"platform\": {\n                \"architecture\": \"arm\",\n                \"os\": \"linux\",\n                \"variant\": \"v6\"\n            },\n            \"size\": 1025\n        },\n        {\n            \"annotations\": {\n                \"com.docker.official-images.bashbrew.arch\": \"arm32v6\",\n                \"vnd.docker.reference.digest\": \"sha256:c6708006c116cbf1d41de6faa0fcd516b92e83ec632a1cd5dff2324994b0d669\",\n                \"vnd.docker.reference.type\": \"attestation-manifest\"\n            },\n            \"digest\": \"sha256:95e9403d45ea741cbf50f827eb0c32be4e898633ab8675bc6eb02e2ff459a13b\",\n            \"mediaType\": \"application/vnd.oci.image.manifest.v1+json\",\n            \"platform\": {\n                \"architecture\": \"unknown\",\n                \"os\": \"unknown\"\n            },\n            \"size\": 566\n        },\n        {\n            \"annotations\": {\n                \"com.docker.official-images.bashbrew.arch\": \"arm32v7\",\n                \"org.opencontainers.image.base.name\": \"scratch\",\n                \"org.opencontainers.image.created\": \"2025-01-08T17:32:40Z\",\n                \"org.opencontainers.image.revision\": \"c1f1de232c970df2285c03050ab3747b8563164f\",\n                \"org.opencontainers.image.source\": \"https://github.com/alpinelinux/docker-alpine.git#c1f1de232c970df2285c03050ab3747b8563164f:armv7\",\n                \"org.opencontainers.image.url\": \"https://hub.docker.com/_/alpine\",\n                \"org.opencontainers.image.version\": \"20250108\"\n            },\n            \"digest\": \"sha256:a91890e39e0d8fdfbbf59ba488ffd5b20182241c550f1b8df4e7b9711c68c5c1\",\n            \"mediaType\": \"application/vnd.oci.image.manifest.v1+json\",\n            \"platform\": {\n                \"architecture\": \"arm\",\n                \"os\": \"linux\",\n                \"variant\": \"v7\"\n            },\n            \"size\": 1025\n        },\n        {\n            \"annotations\": {\n                \"com.docker.official-images.bashbrew.arch\": \"arm32v7\",\n                \"vnd.docker.reference.digest\": \"sha256:a91890e39e0d8fdfbbf59ba488ffd5b20182241c550f1b8df4e7b9711c68c5c1\",\n                \"vnd.docker.reference.type\": \"attestation-manifest\"\n            },\n            \"digest\": \"sha256:3f3a292fdeb26d5f8fe98bebe57303dd91796d6722428734a74e04a8d34fd154\",\n            \"mediaType\": \"application/vnd.oci.image.manifest.v1+json\",\n            \"platform\": {\n                \"architecture\": \"unknown\",\n                \"os\": \"unknown\"\n            },\n            \"size\": 838\n        },\n        {\n            \"annotations\": {\n                \"com.docker.official-images.bashbrew.arch\": \"arm64v8\",\n                \"org.opencontainers.image.base.name\": \"scratch\",\n                \"org.opencontainers.image.created\": \"2025-01-08T17:23:29Z\",\n                \"org.opencontainers.image.revision\": \"c1f1de232c970df2285c03050ab3747b8563164f\",\n                \"org.opencontainers.image.source\": \"https://github.com/alpinelinux/docker-alpine.git#c1f1de232c970df2285c03050ab3747b8563164f:aarch64\",\n                \"org.opencontainers.image.url\": \"https://hub.docker.com/_/alpine\",\n                \"org.opencontainers.image.version\": \"20250108\"\n            },\n            \"digest\": \"sha256:5c9f31938e2b7623a20afa034d2edc972393f2d8e36ed107e548ff270973ddd4\",\n            \"mediaType\": \"application/vnd.oci.image.manifest.v1+json\",\n            \"platform\": {\n                \"architecture\": \"arm64\",\n                \"os\": \"linux\",\n                \"variant\": \"v8\"\n            },\n            \"size\": 1027\n        },\n        {\n            \"annotations\": {\n                \"com.docker.official-images.bashbrew.arch\": \"arm64v8\",\n                \"vnd.docker.reference.digest\": \"sha256:5c9f31938e2b7623a20afa034d2edc972393f2d8e36ed107e548ff270973ddd4\",\n                \"vnd.docker.reference.type\": \"attestation-manifest\"\n            },\n            \"digest\": \"sha256:27a3775743c5c752a54cd60b6065f1f1b5ea72b748853f70117ff378c790ad41\",\n            \"mediaType\": \"application/vnd.oci.image.manifest.v1+json\",\n            \"platform\": {\n                \"architecture\": \"unknown\",\n                \"os\": \"unknown\"\n            },\n            \"size\": 838\n        },\n        {\n            \"annotations\": {\n                \"com.docker.official-images.bashbrew.arch\": \"i386\",\n                \"org.opencontainers.image.base.name\": \"scratch\",\n                \"org.opencontainers.image.created\": \"2025-01-08T17:23:15Z\",\n                \"org.opencontainers.image.revision\": \"c1f1de232c970df2285c03050ab3747b8563164f\",\n                \"org.opencontainers.image.source\": \"https://github.com/alpinelinux/docker-alpine.git#c1f1de232c970df2285c03050ab3747b8563164f:x86\",\n                \"org.opencontainers.image.url\": \"https://hub.docker.com/_/alpine\",\n                \"org.opencontainers.image.version\": \"20250108\"\n            },\n            \"digest\": \"sha256:e64d053044f41a672c26cf1eb2e5488027499cd58428f6b0a359f5b25303d54e\",\n            \"mediaType\": \"application/vnd.oci.image.manifest.v1+json\",\n            \"platform\": {\n                \"architecture\": \"386\",\n                \"os\": \"linux\"\n            },\n            \"size\": 1020\n        },\n        {\n            \"annotations\": {\n                \"com.docker.official-images.bashbrew.arch\": \"i386\",\n                \"vnd.docker.reference.digest\": \"sha256:e64d053044f41a672c26cf1eb2e5488027499cd58428f6b0a359f5b25303d54e\",\n                \"vnd.docker.reference.type\": \"attestation-manifest\"\n            },\n            \"digest\": \"sha256:fb55865cd4c4bc1b1274f3365585a96184bfabc2b4274c5ee1b151dd96b85140\",\n            \"mediaType\": \"application/vnd.oci.image.manifest.v1+json\",\n            \"platform\": {\n                \"architecture\": \"unknown\",\n                \"os\": \"unknown\"\n            },\n            \"size\": 838\n        },\n        {\n            \"annotations\": {\n                \"com.docker.official-images.bashbrew.arch\": \"ppc64le\",\n                \"org.opencontainers.image.base.name\": \"scratch\",\n                \"org.opencontainers.image.created\": \"2025-01-08T17:23:13Z\",\n                \"org.opencontainers.image.revision\": \"c1f1de232c970df2285c03050ab3747b8563164f\",\n                \"org.opencontainers.image.source\": \"https://github.com/alpinelinux/docker-alpine.git#c1f1de232c970df2285c03050ab3747b8563164f:ppc64le\",\n                \"org.opencontainers.image.url\": \"https://hub.docker.com/_/alpine\",\n                \"org.opencontainers.image.version\": \"20250108\"\n            },\n            \"digest\": \"sha256:d55e5a223aed52ceeedf25c829db5fadc9bbf5acb434e922aa4c0c914167a41e\",\n            \"mediaType\": \"application/vnd.oci.image.manifest.v1+json\",\n            \"platform\": {\n                \"architecture\": \"ppc64le\",\n                \"os\": \"linux\"\n            },\n            \"size\": 1027\n        },\n        {\n            \"annotations\": {\n                \"com.docker.official-images.bashbrew.arch\": \"ppc64le\",\n                \"vnd.docker.reference.digest\": \"sha256:d55e5a223aed52ceeedf25c829db5fadc9bbf5acb434e922aa4c0c914167a41e\",\n                \"vnd.docker.reference.type\": \"attestation-manifest\"\n            },\n            \"digest\": \"sha256:5e526c6c813d2d742c5fd024d04dac67c60cb770c7758ac34398f6d053055142\",\n            \"mediaType\": \"application/vnd.oci.image.manifest.v1+json\",\n            \"platform\": {\n                \"architecture\": \"unknown\",\n                \"os\": \"unknown\"\n            },\n            \"size\": 838\n        },\n        {\n            \"annotations\": {\n                \"com.docker.official-images.bashbrew.arch\": \"riscv64\",\n                \"org.opencontainers.image.base.name\": \"scratch\",\n                \"org.opencontainers.image.created\": \"2025-01-08T17:46:59Z\",\n                \"org.opencontainers.image.revision\": \"c1f1de232c970df2285c03050ab3747b8563164f\",\n                \"org.opencontainers.image.source\": \"https://github.com/alpinelinux/docker-alpine.git#c1f1de232c970df2285c03050ab3747b8563164f:riscv64\",\n                \"org.opencontainers.image.url\": \"https://hub.docker.com/_/alpine\",\n                \"org.opencontainers.image.version\": \"20250108\"\n            },\n            \"digest\": \"sha256:f49dc5274dea0a3600c9c9a603bc8e7628e2b0ac0316626606c340c112dc7af9\",\n            \"mediaType\": \"application/vnd.oci.image.manifest.v1+json\",\n            \"platform\": {\n                \"architecture\": \"riscv64\",\n                \"os\": \"linux\"\n            },\n            \"size\": 1027\n        },\n        {\n            \"annotations\": {\n                \"com.docker.official-images.bashbrew.arch\": \"riscv64\",\n                \"vnd.docker.reference.digest\": \"sha256:f49dc5274dea0a3600c9c9a603bc8e7628e2b0ac0316626606c340c112dc7af9\",\n                \"vnd.docker.reference.type\": \"attestation-manifest\"\n            },\n            \"digest\": \"sha256:b6acc0cad7b8d985d4aaabe7de1055a4ee2ce3ba0d620430f9d54bf87ea1fce8\",\n            \"mediaType\": \"application/vnd.oci.image.manifest.v1+json\",\n            \"platform\": {\n                \"architecture\": \"unknown\",\n                \"os\": \"unknown\"\n            },\n            \"size\": 838\n        },\n        {\n            \"annotations\": {\n                \"com.docker.official-images.bashbrew.arch\": \"s390x\",\n                \"org.opencontainers.image.base.name\": \"scratch\",\n                \"org.opencontainers.image.created\": \"2025-01-08T17:24:03Z\",\n                \"org.opencontainers.image.revision\": \"c1f1de232c970df2285c03050ab3747b8563164f\",\n                \"org.opencontainers.image.source\": \"https://github.com/alpinelinux/docker-alpine.git#c1f1de232c970df2285c03050ab3747b8563164f:s390x\",\n                \"org.opencontainers.image.url\": \"https://hub.docker.com/_/alpine\",\n                \"org.opencontainers.image.version\": \"20250108\"\n            },\n            \"digest\": \"sha256:06c4cec207a7413cd4c188842915e44a3346ac300dd11207fb41a701274acc11\",\n            \"mediaType\": \"application/vnd.oci.image.manifest.v1+json\",\n            \"platform\": {\n                \"architecture\": \"s390x\",\n                \"os\": \"linux\"\n            },\n            \"size\": 1023\n        },\n        {\n            \"annotations\": {\n                \"com.docker.official-images.bashbrew.arch\": \"s390x\",\n                \"vnd.docker.reference.digest\": \"sha256:06c4cec207a7413cd4c188842915e44a3346ac300dd11207fb41a701274acc11\",\n                \"vnd.docker.reference.type\": \"attestation-manifest\"\n            },\n            \"digest\": \"sha256:d458746fe026fb9b09a37a966475aff56cb370606e7f51afe5d032dcb662ffb1\",\n            \"mediaType\": \"application/vnd.oci.image.manifest.v1+json\",\n            \"platform\": {\n                \"architecture\": \"unknown\",\n                \"os\": \"unknown\"\n            },\n            \"size\": 838\n        }\n    ],\n    \"mediaType\": \"application/vnd.oci.image.index.v1+json\",\n    \"schemaVersion\": 2\n}"
+						}
+					]
+				}
+			]
+		},
+		{
 			"name": "All Tags",
 			"request": {
 				"auth": {
-					"typer": "basic",
+					"type": "basic",
 					"basic": [
 						{
-							"key": "username",
-							"value": "ducvu1995",
+							"key": "password",
+							"value": "{{docker_hub_personal_access_token}}",
 							"type": "string"
 						},
 						{
-							"key": "password",
-							"value": "personal_access_token",
+							"key": "username",
+							"value": "{{docker_hub_username}}",
 							"type": "string"
 						}
 					]
@@ -152,13 +678,13 @@
 					"type": "basic",
 					"basic": [
 						{
-							"key": "username",
-							"value": "ducvu1995",
+							"key": "password",
+							"value": "{{docker_hub_personal_access_token}}",
 							"type": "string"
 						},
 						{
-							"key": "password",
-							"value": "personal_access_token",
+							"key": "username",
+							"value": "{{docker_hub_username}}",
 							"type": "string"
 						}
 					]

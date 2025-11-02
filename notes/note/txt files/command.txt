@@ -16,7 +16,7 @@
     => Phải xoá tất cả các Build = GUI Docker Desktop
 
 - 6. Liệt kê tất cả mạng Docker.
-    <docker network ls>
+    - docker network ls
         NETWORK ID     NAME      DRIVER    SCOPE
         5fe5907c34ed   bridge    bridge    local
         0efb45f24983   host      host      local
@@ -51,13 +51,20 @@
 - 10. Tạo và chạy một container mới từ image đã chỉ định.
     docker run <the-container-id-or-container-name>
 
-- 9. Dừng container (nếu đang chạy)
+- 11. Dừng container (nếu đang chạy)
     docker stop <the-container-id-or-container-name>
 
-- 10. Chạy lại (start lại) container cũ
+- 12. Chạy lại (start lại) container cũ
     docker start (sử dụng lại container cũ, giữ nguyên volume, network, log, v.v.)
 
-- 11. Nếu muốn “restart” trong một lệnh duy nhất:
+- 13. Nếu muốn “restart” trong một lệnh duy nhất:
     docker restart (= `docker stop` and `docker start`)
 
+- 14. docker run --name nginx_container nginx (Chạy 1 container name = nginx_container từ image nginx)
 
+- 15. Xem log đầu ra (stdout / stderr) của 1 container
+    docker logs -n 5 nginx_container (Xem log 5 dòng cuối cùng container name = nginx_container)
+    docker logs nginx_container (hết log luôn)
+    
+- 16. docker attach nginx_container (Phải start container trước)
+docker ps -a
