@@ -68,3 +68,94 @@
     
 - 16. docker attach nginx_container (Phải start container trước)
 docker ps -a
+
+- 17. Kiểm tra Status của Container.
+    + docker ps -a
+        CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS                      PORTS     NAMES
+        3f751d5ec75d   ubuntu    "/bin/bash"              48 minutes ago   Exited (0) 48 minutes ago             container_ubuntu
+        fbe80fe6ce08   nginx     "/docker-entrypoint.…"   49 minutes ago   Up 49 minutes               80/tcp    container_nginx
+
+    => Cột Status:
+        Exited => Đã dừng
+        Up => Container đang chạy
+
+- 17. Để biết 1 container thuộc về network nào ?
+    - Cách 1: docker inspect <container_name_or_id> => 
+        `docker inspect <container_name_or_id>`
+        docker inspect container_nginx
+            => "Networks": {
+                    "bridge": { (container này thuộc network Bridge)
+                    ....
+                    }
+                }
+
+        Cách ngắn hơn
+            `docker inspect -f '{{json .NetworkSettings.Networks}}' container_nginx | jq`
+
+    Cách 2: Xem tất cả các Container trong 1 Network:
+        - Liệt kê tất cả các Network hiện có:
+            + docker network ls
+                NETWORK ID     NAME      DRIVER    SCOPE
+                f31f37cdd793   bridge    bridge    local
+                0efb45f24983   host      host      local
+                d99401f9cabb   none      null      local
+
+        - Xem tất cả các Container trong 1 Network:
+            + docker network inspect bridge
+                ................
+                "Containers": {
+                    "fbe80fe6ce08e292041637b966e7e5b7ac2f5b9a0138e735e01ea1d70c7c7d0f": {
+                        "Name": "container_nginx",
+                        "EndpointID": "e7124d4a7e9abe7f8b8b5eadcc01c74222ef24ef823153a7b9d507482cc5e6de",
+                        "MacAddress": "aa:79:4d:c2:7a:14",
+                        "IPv4Address": "172.17.0.2/16",
+                        "IPv6Address": ""
+                    }
+                },
+                ................
+
+
+    => container container_nginx, đang nằm trong bridge network,
+    và bạn muốn chuyển sang network my_network mà không xoá container, không chạy lại.
+
+    Bước 1: 
+        - Kiểm tra Status Container: docker ps
+
+            CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS          PORTS     NAMES
+            fbe80fe6ce08   nginx     "/docker-entrypoint.…"   56 minutes ago   Up 56 minutes   80/tcp    container_nginx
+            => container_nginx đang chạy
+
+        - Kiểm tra current network của Container này:
+            `docker inspect -f '{{json .NetworkSettings.Networks}}' container_nginx | jq`
+                "bridge": { .....
+                    "IPAMConfig": null,
+                    "Links": nu
+                } .....
+            => Container đang thuộc Network bridge
+
+    Bước 2: Tạo 1 Custom Network riêng
+        - docker network create my_network
+        Kiểm tra: `docker network ls`
+            NETWORK ID     NAME         DRIVER    SCOPE
+            f31f37cdd793   bridge       bridge    local
+            0efb45f24983   host         host      local
+            517d337c51ae   my_network   bridge    local
+            d99401f9cabb   none         null      local
+
+    Bước 2: Ngắt container khỏi network hiện tại
+        docker network disconnect bridge container_nginx
+        Kiểm tra current network của Container này:
+            {}
+            => Container không có Network nào
+
+    Bước 3: Kết nối container sang network khác
+        docker network connect my_network container_nginx
+        Kiểm tra lại: 
+            `docker inspect -f '{{json .NetworkSettings.Networks}}' container_nginx | jq`
+            {
+                "my_network": {
+                    "IPAMConfig": {},
+                    .....
+                }
+            }
+            => Đã chuyển Network của container từ bridge sang my_network

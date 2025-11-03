@@ -1,0 +1,1 @@
+docker container inspect --format='{{json .NetworkSettings.Networks}}' nginx_container

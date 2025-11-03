@@ -1,0 +1,37 @@
+1. Tạo 1 Network
+    docker network create <network_name>
+
+2. Xem tất cả Network
+    docker network ls
+        NETWORK ID     NAME         DRIVER    SCOPE
+        f31f37cdd793   bridge       bridge    local
+        0efb45f24983   host         host      local
+        517d337c51ae   my_network   bridge    local
+        d99401f9cabb   none         null      local
+
+3. Ngắt kết nối 1 Container khỏi 1 Network
+    docker network disconnect <network_name> <container_id_or_name>
+
+4. Kết nối 1 Container với 1 Network
+    docker network connect <network_name> <container_id_or_name>
+
+5. Cách kiểm tra 1 Container thuộc về Network nào ?
+    Cách 1: Full
+        `docker inspect <container_id_or_name>`
+
+            => "Networks": { .......
+                "bridge": { (container này thuộc network Bridge)
+                }
+            } .......
+
+    Cách 2: Ngắn gọn
+        `docker inspect -f '{{json .NetworkSettings.Networks}}' container_nginx | jq`
+            {
+                "bridge": { (container này thuộc network Bridge)
+                    "IPAMConfig": {},
+                    .....
+                }
+            }
+
+6. 
+
