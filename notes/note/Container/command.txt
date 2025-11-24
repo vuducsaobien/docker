@@ -1,0 +1,54 @@
+1. Tạo & chạy container
+Lệnh	                                Chức năng
+docker run <image>	                    Tạo + chạy 1 container mới từ image
+docker run -d <image>	                Chạy container ở chế độ nền
+docker run -p 8080:80 <image>	        Map port host:container
+docker run -v host:container <image>	Gắn volume
+docker run --name myapp <image>	        Đặt tên container
+
+2. Start / Stop container
+Lệnh	                            Chức năng
+docker start <container>	        Bắt đầu một container đã tồn tại
+docker stop <container>	            Dừng container
+docker restart <container>	        Restart container
+docker kill <container>	            Dừng ngay lập tức (SIGKILL)
+docker container stop <container>   Stop 1 container
+
+3. Liệt kê container
+Lệnh	                Chức năng
+docker ps	            List container đang chạy
+docker ps -a	        List tất cả container (kể cả stopped)
+docker container ls	    Cú pháp mới của docker ps
+
+4. Xem logs / info
+Lệnh	                    Chức năng
+docker logs <container>	    Xem logs
+docker logs -f <container>	Xem logs và follow realtime
+docker inspect <container>	Xem chi tiết container
+
+5. Truy cập vào container
+Lệnh	                            Chức năng
+docker exec -it <container> sh	    Mở shell sh
+docker exec -it <container> bash	Mở shell bash
+docker attach <container>	        Gắn terminal vào process chính
+
+6. Copy file vào/ra container
+Lệnh	                                Chức năng
+docker cp file.txt <container>:/app/	Copy từ host → container
+docker cp <container>:/app/file.txt .	Copy từ container → host
+
+7. Xoá container
+Lệnh	                            Chức năng
+docker rm <container>	            Xoá container
+docker rm -f <container>	        Xoá container đang chạy
+docker container prune	            Xoá tất cả container stopped
+docker container rm <container>     Xoá 1 Container
+
+8. Commit container thành image
+Lệnh	                                    Chức năng
+docker commit <container> <image:newtag>	Tạo image từ container
+
+9. Network liên quan container
+Lệnh	                                            Chức năng
+docker network connect <network> <container>	    Gắn container vào network
+docker network disconnect <network> <container>	    Gỡ container khỏi network

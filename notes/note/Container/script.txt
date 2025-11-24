@@ -1,0 +1,15 @@
+1. docker run -d \
+    --name devtest \
+    --mount source=myvol2,target=/app \
+    nginx:latest
+
+    + 1.1 Tải image về trước (nếu chưa có)
+        - docker pull nginx:latest
+    + 1.2. Tạo volume riêng
+        docker volume create myvol2
+    + 1.3. Tạo container nhưng KHÔNG chạy
+        Chỉ tạo container + gắn volume + gán name + chọn image:
+        docker create \
+        --name devtest \
+        --mount source=myvol2,target=/app \
+        nginx:latest

@@ -1,0 +1,35 @@
+1. Xem danh sách & thông tin Image
+Lệnh	                        Chức năng
+docker images	                Liệt kê tất cả images trên máy
+docker image ls	                Giống docker images, cú pháp mới
+docker image inspect <image>	Xem chi tiết metadata của một image
+docker image history <image>	Xem các layer tạo nên image
+
+2. Xoá Image
+Lệnh	                        Chức năng
+docker rmi <image>	            Xoá 1 image
+docker rmi <image1> <image2>	Xoá nhiều image
+docker image rm <image>	        Cú pháp mới
+docker image prune	            Xoá các image không dùng
+docker image prune -a	        Xoá tất cả images không gắn với container nào
+
+3. Tải (pull) Image
+Lệnh	                    Chức năng
+docker pull <image>	        Tải image từ Docker Hub
+docker pull <image>:<tag>	Tải image theo tag
+
+4. Build Image
+Lệnh	                                        Chức năng
+docker build -t <name> .	                    Build image từ Dockerfile trong thư mục hiện tại
+docker build -f <path/Dockerfile> -t <name> .	Build từ Dockerfile chỉ định
+docker image build ...	                        Cú pháp mới tương đương
+
+5. Tag Image
+Lệnh	                            Chức năng
+docker tag <image> <repo>:<tag>	    Gắn tag mới cho image
+docker tag myapp:latest myapp:v1.0	Ví dụ
+
+6. Push Image lên Registry
+Lệnh	                    Chức năng
+docker login	            Đăng nhập Docker Hub
+docker push <repo>:<tag>	Push image lên registry
