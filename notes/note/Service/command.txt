@@ -1,0 +1,20 @@
+A. Docker Service là gì?
+    Docker Service = cách Docker Swarm chạy container theo dạng “cluster mode” (nhiều máy, nhiều node).
+    Nó không phải container.
+    Nó quản lý container.
+
+B. Docker Service khác gì Container?
+    Khái niệm	    Là gì?	                                    Dùng khi nào?
+    Container	    Một instance được tạo từ image	            Chạy trên 1 máy
+    Service	        Nhóm container được quản lý bởi Swarm	    Chạy trên nhiều máy (cluster)
+    Task	        Container thuộc service	                    Được Swarm tạo và quản lý
+
+Nói đơn giản:
+Container = 1 ứng dụng đơn lẻ
+Service = một nhóm container chạy ở chế độ tự động, phân tán, scale lên/giảm xuống
+
+1. docker service (Dùng Docker compose)
+“service” được định nghĩa trong file docker-compose.yml, 
+và Docker Compose sẽ tạo container khi bạn chạy lệnh docker compose up.
+
+docker compose -p my_service up -d   (Đặt tên cho service)

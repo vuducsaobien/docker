@@ -1,0 +1,21 @@
+services:
+  php:
+    image: php:8.2-apache
+    # container_name: myapp_php        # tên container cố định
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src:/var/www/html          # code PHP trên host
+    depends_on:
+      - mysql_service
+
+  mysql_service:
+    image: mysql:8.0
+    # container_name: myapp_mysql      # tên container cố định
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: testdb
+    volumes:
+      - mysql_service_data:/var/lib/mysql    # volume đặt tên rõ ràng
+volumes:
+  mysql_service_data:                        # định nghĩa volume để MySQL lưu dữ liệu lâu dài

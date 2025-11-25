@@ -1,0 +1,39 @@
+https://docs.docker.com/reference/compose-file/services/
+Xoá hết các Container, Images, Build, Volume 
+- docker system df -v
+    Images space usage:
+    REPOSITORY   TAG       IMAGE ID   CREATED   SIZE      SHARED SIZE   UNIQUE SIZE   CONTAINERS
+
+    Containers space usage:
+    CONTAINER ID   IMAGE     COMMAND   LOCAL VOLUMES   SIZE      CREATED   STATUS    NAMES
+
+    Local Volumes space usage:
+    VOLUME NAME   LINKS     SIZE
+
+    Build cache usage: 0B
+    CACHE ID   CACHE TYPE   SIZE      CREATED   LAST USED   USAGE     SHARED
+
+1. docker compose -p my_service up -d
+2. Kiểm tra chi tiết
+    - docker system df -v
+        Images space usage:
+        REPOSITORY   TAG          IMAGE ID       CREATED       SIZE      SHARED SIZE   UNIQUE SIZE   CONTAINERS
+        php          8.2-apache   b8c8cd2be569   7 days ago    714MB     0B            713.6MB       1
+        mysql        8.0          f37951fc3753   4 weeks ago   1.06GB    0B            1.06GB        1
+
+        Containers space usage:
+        CONTAINER ID   IMAGE            COMMAND                  LOCAL VOLUMES   SIZE      CREATED          STATUS          NAMES
+        f980facbbdeb   php:8.2-apache   "docker-php-entrypoi…"   0               24.6kB    21 seconds ago   Up 20 seconds   my_service-php-1
+        bbf546ee91fb   mysql:8.0        "docker-entrypoint.s…"   1               32.8kB    21 seconds ago   Up 20 seconds   my_service-mysql_service-1
+
+        Local Volumes space usage:
+        VOLUME NAME                     LINKS     SIZE
+        my_service_mysql_service_data   1         210.3MB
+
+        Build cache usage: 0B
+        CACHE ID   CACHE TYPE   SIZE      CREATED   LAST USED   USAGE     SHARED
+
+        Tab Container:
+            - my_service
+                + mysql_service-1
+                + php-1
