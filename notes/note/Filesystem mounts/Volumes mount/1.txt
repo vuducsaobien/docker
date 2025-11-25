@@ -1,0 +1,46 @@
+https://docs.docker.com/engine/storage/volumes/
+If you start a container with a volume that doesn't yet exist, 
+Docker creates the volume for you. 
+The following example mounts the volume myvol2 into /app/ in the container.
+
+The following -v and --mount examples produce the same result. 
+You can't run them both unless you remove the devtest container and the myvol2 volume after running the first one.
+
+     docker run -d \
+    --name devtest \
+    --mount source=myvol2,target=/app \
+    nginx:latest
+
+     docker run -d \
+    --name devtest \
+    -v myvol2:/app \
+    nginx:latest
+
+Use a volume with Docker Compose
+    The following example shows a single Docker Compose service with a volume:
+        ```
+            services:
+                frontend:
+                    image: node:lts
+                    volumes:
+                    - myapp:/home/node/app
+                volumes:
+                myapp:
+        ```
+
+Running `docker compose up` for the first time creates a volume. 
+Docker reuses the same volume when you run the command subsequently.
+
+You can create a volume directly outside of Compose 
+using `docker volume create` and then reference it inside `compose.yaml` as follows:
+    ```
+        services:
+        frontend:
+            image: node:lts
+            volumes:
+            - myapp:/home/node/app
+        volumes:
+        myapp:
+            external: true
+    ```
+    https://docs.docker.com/reference/compose-file/volumes/

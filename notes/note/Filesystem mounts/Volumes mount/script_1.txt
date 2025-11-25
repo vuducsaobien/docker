@@ -1,0 +1,72 @@
+1. Remove all container
+     docker ps -aq | xargs -r docker rm -f
+2. Kiểm tra Chi tiết
+     docker system df -v
+          Images space usage:
+               REPOSITORY   TAG       IMAGE ID       CREATED         SIZE      SHARED SIZE   UNIQUE SIZE   CONTAINERS
+               nginx        latest    f547e3d0d5d0   5 days ago      244MB     0B            243.9MB       0
+               ubuntu       latest    66460d557b25   4 weeks ago     139MB     0B            139.2MB       0
+               busybox      latest    e3652a00a2fa   13 months ago   6.21MB    0B            6.209MB       0
+
+          Containers space usage:
+               CONTAINER ID   IMAGE     COMMAND   LOCAL VOLUMES   SIZE      CREATED   STATUS    NAMES
+
+          Local Volumes space usage:
+               VOLUME NAME   LINKS     SIZE
+
+          Build cache usage: 0B
+               CACHE ID   CACHE TYPE   SIZE      CREATED   LAST USED   USAGE     SHARED
+
+3.1 Run bằng --mount 
+     docker run -d \
+    --name devtest \
+    --mount source=myvol2,target=/app \
+    nginx:latest
+
+3.2 Run bằng -v
+     docker run -d \
+     --name devtest \
+     -v myvol2:/app \
+     nginx:latest
+
+4. Kiểm tra Chi tiết
+     docker system df -v
+          Images space usage:
+               REPOSITORY   TAG       IMAGE ID       CREATED         SIZE      SHARED SIZE   UNIQUE SIZE   CONTAINERS
+               nginx        latest    f547e3d0d5d0   5 days ago      244MB     0B            243.9MB       1
+               ubuntu       latest    66460d557b25   4 weeks ago     139MB     0B            139.2MB       0
+               busybox      latest    e3652a00a2fa   13 months ago   6.21MB    0B            6.209MB       0
+
+          Containers space usage:
+               CONTAINER ID   IMAGE          COMMAND                  LOCAL VOLUMES   SIZE      CREATED         STATUS         NAMES
+               0b2d29d9a270   nginx:latest   "/docker-entrypoint.…"   1               86kB      4 minutes ago   Up 4 minutes   devtest
+
+          Local Volumes space usage:
+               VOLUME NAME   LINKS     SIZE
+               myvol2        1         0B
+
+5. Kiểm tra Chi tiết 1 Container
+     Use docker inspect devtest to verify that Docker created the volume and it mounted correctly. 
+     Look for the Mounts section:
+
+     - docker inspect devtest
+          ....................................
+          "Mounts": [
+                         {
+                              "Type": "volume",
+                              "Name": "myvol2",
+                              "Source": "/var/lib/docker/volumes/myvol2/_data",
+                              "Destination": "/app",
+                              "Driver": "local",
+                              "Mode": "z",
+                              "RW": true,
+                              "Propagation": ""
+                         }
+                    ],
+          ....................................
+     This shows that the mount is a volume, it shows the correct source and destination, and that the mount is read-write.
+
+6. Stop the container and remove the volume. Note volume removal is a separate step.
+     docker container stop devtest
+     docker container rm devtest
+     docker volume rm myvol2

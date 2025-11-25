@@ -1,0 +1,41 @@
+1. List volumes:
+    - docker volume ls
+        DRIVER    VOLUME NAME
+        
+2. Create a volume:
+    - docker volume create <volume_name>
+
+3. Inspect a volume:
+    - docker volume inspect <volume_name>
+        [
+            {
+                "CreatedAt": "2025-11-03T15:33:04Z",
+                "Driver": "local",
+                "Labels": null,
+                "Mountpoint": "/var/lib/docker/volumes/my-vol/_data",
+                "Name": "my-vol",
+                "Options": null,
+                "Scope": "local"
+            }
+        ]
+
+4. Remove a volume:
+    docker volume rm <volume_name>
+
+4.1 Xóa tất cả volumes không sử dụng (dangling)
+    docker volume prune
+
+4.2 Xóa tất cả volumes không gắn container nào
+    docker volume prune -f
+
+5.1 Start a container with a volume
+    - Có 2 cách : 
+        + --mount
+        + -v
+
+5. Dùng volume khi chạy container
+    Gắn volume bằng --mount (chuẩn nhất)
+        - docker run -d \
+        --mount source=myvol,target=/app \
+        nginx
+    
