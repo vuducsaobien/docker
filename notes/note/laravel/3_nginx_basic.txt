@@ -149,7 +149,7 @@ docker/nginx-classic/
     + File .env.example giống y hệt file .env
     + Thông tin DBeaver:
         Server host: localhost
-        Port: 3306
+        Port: 3307
         Database: laravel
         Username: laravel
         Password: secret

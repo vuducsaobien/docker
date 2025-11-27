@@ -13,12 +13,14 @@ docker stop <container>	            Dừng container
 docker restart <container>	        Restart container
 docker kill <container>	            Dừng ngay lập tức (SIGKILL)
 docker container stop <container>   Stop 1 container
+docker stop $(docker ps -aq)        Stop tất cả container
 
 3. Liệt kê container
-Lệnh	                Chức năng
-docker ps	            List container đang chạy
-docker ps -a	        List tất cả container (kể cả stopped)
-docker container ls	    Cú pháp mới của docker ps
+Lệnh	                                Chức năng
+docker ps	                            List container đang chạy
+docker ps -a	                        List tất cả container (kể cả stopped)
+docker container ls	                    Cú pháp mới của docker ps
+docker ps -f name=<container_name>      Xem 1 container theo tên
 
 4. Xem logs / info
 Lệnh	                    Chức năng
@@ -43,6 +45,7 @@ docker rm <container>	            Xoá container
 docker rm -f <container>	        Xoá container đang chạy
 docker container prune	            Xoá tất cả container stopped
 docker container rm <container>     Xoá 1 Container
+docker rm -f $(docker ps -aq)       Xoá tất cả container
 
 8. Commit container thành image
 Lệnh	                                    Chức năng

@@ -1,0 +1,60 @@
+1. DBeaver: Server host: localhost Khác với php-fpm service : DB_HOST: mysql nhỉ ?
+    DB host khác nhau vì chúng đang chạy ở hai “môi trường mạng” khác nhau:
+    - DBeaver (chạy trên máy host): cần kết nối tới MySQL qua cổng host được publish. 
+    Trong docker-compose.yml, service mysql mở port 3306:3306, nên từ máy host có thể dùng localhost:3306.
+
+    - PHP-FPM container: chạy cùng mạng bridge của Docker (laravel-network). 
+    Các service trong cùng mạng có thể gọi nhau bằng service name. 
+    Vì vậy biến môi trường DB_HOST: mysql nghĩa là PHP/Laravel 
+    sẽ kết nối tới container MySQL thông qua hostname nội bộ mysql trên port 3306 (không cần NAT).
+
+    Tóm lại:
+    Từ máy host → dùng localhost (do port đã publish).
+    Từ container khác → dùng mysql (tên service trong network).
+    
+2. Muốn đổi thông tin kết nối với Dbeaver từ port 3306 => 3307
+- Kiểm tra: 
+    + docker ps
+        CONTAINER ID   IMAGE            COMMAND                  CREATED              STATUS                        PORTS                                         NAMES
+        61e57d4dc8a0   docker-nginx     "/docker-entrypoint.…"   About a minute ago   Up About a minute             0.0.0.0:8080->80/tcp, [::]:8080->80/tcp       laravel_nginx
+        3cdcf631a03e   docker-php-fpm   "docker-php-entrypoi…"   About a minute ago   Up About a minute             9000/tcp                                      laravel_php-fpm
+        62fcf81a7e6f   mysql:8.0        "docker-entrypoint.s…"   About a minute ago   Up About a minute (healthy)   0.0.0.0:3306->3306/tcp, [::]:3306->3306/tcp   laravel_mysql
+
+        => Ta dùng Container laravel_php-fpm để kết nối với DB qua container laravel_mysql,
+        nên sẽ đổi port Container này
+        NAMES               PORTS
+        laravel_mysql       0.0.0.0:3306->3306/tcp, [::]:3306->3306/tcp
+
+- Xoá tất cả Container: docker rm -f $(docker ps -aq)
+    + Kiểm tra: (docker ps)
+        CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+- Sửa file docker-compose.yml
+- Build lại Container (docker compose up -d)
+- Kiểm tra (docker ps -f name=laravel_mysql)
+    NAMES               PORTS
+    laravel_mysql       0.0.0.0:3307->3306/tcp, [::]:3306->3306/tcp
+
+- Chỉnh sửa lại thông tin kết nối Database Dbeaver
+    Edit connection của Dbeaver từ 3306 => 3307
+- Kiểm tra thông tin Port của Connection, thì thấy đã chuyển Port từ 3306 sang 3307
+    "mysql8-19ac46e616b-4414a90c9a145de5": {
+        "provider": "mysql",
+        "driver": "mysql8",
+        "name": "laravel",
+        "save-password": true,
+        "configuration": {
+            "host": "localhost",
+            "port": "3307",
+            "database": "laravel",
+            "url": "jdbc:mysql://localhost:3307/laravel",
+            "configurationType": "MANUAL",
+            "home": "/opt/homebrew/Cellar/mariadb/11.8.2",
+            "type": "dev",
+            "closeIdleConnection": true,
+            "provider-properties": {
+                "@dbeaver-show-all-dbs@": "true"
+            },
+            "auth-model": "native"
+        }
+    }    
+- Vào http://localhost:8080 để kiểm tra kết nối DB, OK
