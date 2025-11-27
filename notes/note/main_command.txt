@@ -1,0 +1,7 @@
+- Xoá hết các Images, Build, container, Volumes (Bằng UI Docker Desktop)
+
+- Xoá hết các Cache 
+    + docker builder prune -f
+    
+- Kiểm tra: 
+    + docker system df -v

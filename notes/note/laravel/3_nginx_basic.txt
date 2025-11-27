@@ -1,0 +1,168 @@
+```
+docker/nginx-classic/
+├── Dockerfile.nginx      # Dockerfile cho NGINX
+├── Dockerfile.php-fpm    # Dockerfile cho PHP-FPM với các extension Laravel
+├── nginx.conf            # Cấu hình NGINX cho Laravel
+└── README.md             # File này
+
+1. docker-compose.yml
+
+```
+    Xoá hết các Images, Build, container, Volumes (Bằng UI Docker Desktop)
+    Xoá hết các Cache (docker builder prune -f)
+    Kiểm tra: (docker system df -v) Rỗng hết
+- docker compose -p docker_service up -d --build
+- docker exec -it laravel_nginx sh
+- cd etc/nginx/conf.d/
+- ls
+    + default.conf
+- cat default.conf
+    => Giống y hệt file nginx.conf
+
+2. File cấu hình nginx của Laravel
+    https://laravel.com/docs/12.x/deployment#nginx
+    server {
+        listen 80;
+        listen [::]:80;
+        server_name example.com;
+        root /srv/example.com/public;
+    
+        add_header X-Frame-Options "SAMEORIGIN";
+        add_header X-Content-Type-Options "nosniff";
+    
+        index index.php;
+    
+        charset utf-8;
+    
+        location / {
+            try_files $uri $uri/ /index.php?$query_string;
+        }
+    
+        location = /favicon.ico { access_log off; log_not_found off; }
+        location = /robots.txt  { access_log off; log_not_found off; }
+    
+        error_page 404 /index.php;
+    
+        location ~ ^/index\.php(/|$) {
+            fastcgi_pass unix:/var/run/php/php8.2-fpm.sock;
+            fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+            include fastcgi_params;
+            fastcgi_hide_header X-Powered-By;
+        }
+    
+        location ~ /\.(?!well-known).* {
+            deny all;
+        }
+    }
+
+3. Kiểm tra Docker
+    - docker system df -v
+        Images space usage:
+
+        REPOSITORY               TAG       IMAGE ID       CREATED          SIZE      SHARED SIZE   UNIQUE SIZE   CONTAINERS
+        docker_service-php-fpm   latest    f91507b5ab3e   10 minutes ago   895MB     0B            895.2MB       1
+        docker_service-nginx     latest    604ff8678666   14 minutes ago   80.9MB    0B            80.91MB       1
+        mysql                    8.0       f37951fc3753   5 weeks ago      1.06GB    0B            1.06GB        1
+
+        Containers space usage:
+
+        CONTAINER ID   IMAGE                    COMMAND                  LOCAL VOLUMES   SIZE      CREATED          STATUS                    NAMES
+        39ca0432a2b8   docker_service-nginx     "/docker-entrypoint.…"   0               90.1kB    10 minutes ago   Up 9 minutes              laravel_nginx
+        1474af736141   docker_service-php-fpm   "docker-php-entrypoi…"   0               4.1kB     10 minutes ago   Up 9 minutes              laravel_php-fpm
+        fe40434b4ec6   mysql:8.0                "docker-entrypoint.s…"   1               32.8kB    10 minutes ago   Up 10 minutes (healthy)   laravel_mysql
+
+        Local Volumes space usage:
+
+        VOLUME NAME                 LINKS     SIZE
+        docker_service_mysql_data   1         210.3MB
+
+        - Kiểm tra UI Docker Desktop, tab Build
+            + Có 2 build cùng tên: docker/nginx-classic
+            + Lý do: Cả 2 service (nginx và php-fpm) đều build từ cùng context ./docker/nginx-classic
+            + Nhưng sử dụng Dockerfile khác nhau (Dockerfile.nginx và Dockerfile.php-fpm)
+
+4. Ứng với 2 service (nginx & php-fpm) sẽ có 2 Build (cùng tên docker/nginx-classic)
+    + Liệt kê Danh sách
+        - docker buildx history ls
+            BUILD ID                    NAME                   STATUS      CREATED AT    DURATION   
+            lz4gnx0vbt89j3mf3kxkj3f5z   docker/nginx-classic   Completed   3 hours ago   26.9s      Open
+            je77zfuuzbuerrl5ufwmjolo8   docker/nginx-classic   Completed   3 hours ago   4m 18s     Open
+        - Chi tiết 1 Build:
+        - docker buildx history inspect je77zfuuzbuerrl5ufwmjolo8
+            Name:           docker/nginx-classic
+            Dockerfile:     docker/nginx-classic/Dockerfile.php-fpm
+            VCS Repository: https://github.com/vuducsaobien/docker.git
+            VCS Revision:   cc8e38e12be48a4d112075721a3f171a5aca46e4
+
+            Started:        2025-11-27 11:06:04
+            Duration:       4m 18s
+            Build Steps:    11/11 (0% cached)
+
+            Image Resolve Mode:             local
+            local-sessionid:context:        m1x1zcq3vql53jyfo6sy0mw7h
+            local-sessionid:dockerfile:     m1x1zcq3vql53jyfo6sy0mw7h
+
+            Materials:
+            URI                                                     DIGEST
+            pkg:docker/composer@latest?platform=linux%2Farm64       sha256:8f3b7d97cd7436dae41d6af0dd6a53853779040ecac26e65544fc31746035705
+            pkg:docker/php@8.3-fpm?platform=linux%2Farm64           sha256:76de5af83c47d269f631dd6c06842e0fd48470278c11193e9d2b0a949fc99efe
+
+            Attachments:
+            DIGEST                                                                  PLATFORM        TYPE
+            sha256:f91507b5ab3eaf47863f1e85698cef37ff130306c99c299fef533e66563ca41a                 application/vnd.oci.image.index.v1+json
+            sha256:a9a3aeb2c4ab6c51cf4bfb263ba69fe726ba8a87041f10b89ef102f1c9327b23                 https://slsa.dev/provenance/v0.2
+            sha256:49dcf59bdcd4d2cd1227c4952164af8b014d7f0a177305e3ab42b089d11df555 linux/arm64     application/vnd.oci.image.manifest.v1+json
+
+            Print build logs: docker buildx history logs je77zfuuzbuerrl5ufwmjolo8
+            View build in Docker Desktop: docker-desktop://dashboard/build/desktop-linux/desktop-linux/je77zfuuzbuerrl5ufwmjolo8
+
+5. Tắt các Container. (Thường chỉ cần Docker-compose down thôi là đủ, nhưng đã đăt lại tên cho Service, nên phải gọi đúng service)
+    - docker compose -p docker_service down 
+6. Giờ gọi default. (docker compose up -d --build)
+    - Xoá hết các images, Build, Volumes, Container & Build lại từ đầu.
+7. Kiểm tra Docker
+    - docker system df -v
+        + Images space usage:
+
+        REPOSITORY       TAG       IMAGE ID       CREATED              SIZE      SHARED SIZE   UNIQUE SIZE   CONTAINERS
+        docker-php-fpm   latest    2c88966584d7   About a minute ago   895MB     0B            895.2MB       1
+        docker-nginx     latest    99bb2d50e2e6   3 minutes ago        80.9MB    0B            80.91MB       1
+        mysql            8.0       f37951fc3753   5 weeks ago          1.06GB    0B            1.06GB        1
+
+        + Containers space usage:
+
+        CONTAINER ID   IMAGE            COMMAND                  LOCAL VOLUMES   SIZE      CREATED              STATUS                        NAMES
+        ea2455a48bae   docker-nginx     "/docker-entrypoint.…"   0               90.1kB    About a minute ago   Up About a minute             laravel_nginx
+        94893e9d9561   docker-php-fpm   "docker-php-entrypoi…"   0               4.1kB     About a minute ago   Up About a minute             laravel_php-fpm
+        f5137397cab5   mysql:8.0        "docker-entrypoint.s…"   1               32.8kB    About a minute ago   Up About a minute (healthy)   laravel_mysql
+
+        + Local Volumes space usage:
+
+        VOLUME NAME         LINKS     SIZE
+        docker_mysql_data   1         210.3MB
+
+        + Build cache usage: 295MB
+
+        CACHE ID       CACHE TYPE     SIZE      CREATED              LAST USED            USAGE     SHARED
+
+8. Kết nối Database: Dbeaver
+    + File .env.example giống y hệt file .env
+    + Thông tin DBeaver:
+        Server host: localhost
+        Port: 3306
+        Database: laravel
+        Username: laravel
+        Password: secret
+    Nhưng trong database này không có dữ liệu gì cả.
+    => Tiến hành migrate Data.
+    - docker ps
+        CONTAINER ID   IMAGE            COMMAND                  CREATED          STATUS                    PORTS                                         NAMES
+        ea2455a48bae   docker-nginx     "/docker-entrypoint.…"   17 minutes ago   Up 17 minutes             0.0.0.0:8080->80/tcp, [::]:8080->80/tcp       laravel_nginx
+        94893e9d9561   docker-php-fpm   "docker-php-entrypoi…"   17 minutes ago   Up 17 minutes             9000/tcp                                      laravel_php-fpm
+        f5137397cab5   mysql:8.0        "docker-entrypoint.s…"   17 minutes ago   Up 17 minutes (healthy)   0.0.0.0:3306->3306/tcp, [::]:3306->3306/tcp   laravel_mysql
+    - docker exec -it laravel_php-fpm bash
+    - php artisan migrate
+    - Kiểm tra lại Dbeaver thì đã có table
+    - Backup lại file DB ở folder ./db_backup/
+    - Vào http://localhost:8080 thì hiện ra UI
+9. 

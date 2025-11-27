@@ -1,0 +1,68 @@
+Docker, Yii2, PHP, thì Apache, nginx-unit, supervisor là gì ?
+1. Apache là gì?
+    Apache HTTP Server = web server truyền thống.
+    ✔ Vai trò:
+        Nhận request HTTP → chuyển cho PHP xử lý → trả về HTML/JSON.
+        Thường chạy với mod_php hoặc php-fpm (proxy).
+        Hỗ trợ .htaccess, rewrite URL (Yii2 dùng rất nhiều).
+    ✔ Khi nào dùng Apache?
+        Nếu bạn muốn cấu hình .htaccess, rewrite “kiểu cũ”.
+        Setup đơn giản cho PHP apps.
+    ✔ Nhược điểm:
+        Hiệu năng thấp hơn Nginx ở tải lớn.
+        Không tối ưu cho nhiều request đồng thời.
+
+2. Nginx Unit là gì?
+    Nginx Unit = application server thế hệ mới của Nginx.
+    ⚠ KHÁC NGINX TRUYỀN THỐNG!
+
+    ✔ Điểm hay:
+        Một service duy nhất chạy web server + app server cho nhiều ngôn ngữ (PHP, Python, Node, Go…).
+        Không cần php-fpm → Unit tự chạy PHP.
+        Cấu hình bằng API JSON → không cần reload service.
+    ✔ Khi nào dùng Nginx Unit?
+        Khi bạn muốn:
+        Deploy microservice PHP đơn giản.
+        Không thích cấu hình nginx.conf.
+        Muốn reload config không downtime.
+    ✔ Nhược điểm:
+        Tài liệu ít hơn Nginx Classic.
+        Không phổ biến bằng Nginx + PHP-FPM.
+
+3. Supervisor là gì?
+    Supervisor (supervisord) = process manager.
+    Nó không phải web server.
+    Nó dùng để giữ cho các tiến trình trong container luôn chạy.
+    ✔ Trong Docker + PHP thường để làm gì?
+        Chạy queue workers (Yii2 queue, Laravel queue).
+        Chạy cron jobs.
+        Chạy PHP-FPM + worker khác trong 1 container (không khuyến khích nhưng vẫn có người dùng).
+        Restart process khi crash.
+    ✔ Khi nào dùng Supervisor?
+        Bạn có nhiều tiến trình cần chạy song song trong 1 container:
+        php-fpm
+        queue worker
+        websocket server
+        cron
+    ✔ Nhược điểm:
+        Vi phạm triết lý Docker (1 container 1 process).
+        Dễ loạn process nếu cấu hình sai.
+
+Tóm gọn – hiểu nhanh
+    Thành phần	    Là gì?	                    Dùng cho?
+    Apache	        Web server	                Serve PHP, dùng mod_php hoặc PHP-FPM
+    Nginx Unit	    Application server mới	    Serve PHP trực tiếp, cấu hình qua JSON API
+    Supervisor	    Process Manager	            Chạy nhiều process trong 1 container
+
+=> Thứ tự học
+🔥 1. NGINX Classic + PHP-FPM (QUAN TRỌNG NHẤT)
+(Làm chuẩn industry, cloud, DevOps)
+
+🔥 2. Apache
+(Hiểu cơ bản – hữu ích khi gặp project cũ)
+
+🔥 3. Supervisor
+(Khi bạn có queue / cron / websocket)
+
+🔥 4. Nginx Unit
+(Học sau, khi muốn nâng level hoặc làm microservices)

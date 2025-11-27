@@ -1,0 +1,38 @@
+Này là các lệnh để kiểm tra trên tab Builds của Docker Desktop UI
+1. Liệt kê danh sách các Build hiện có. 
+    - docker buildx history ls
+        BUILD ID                    NAME                   STATUS      CREATED AT    DURATION   
+        lz4gnx0vbt89j3mf3kxkj3f5z   docker/nginx-classic   Completed   3 hours ago   26.9s      Open
+        je77zfuuzbuerrl5ufwmjolo8   docker/nginx-classic   Completed   3 hours ago   4m 18s     Open
+2. Chi tiết 1 Build:
+    - docker buildx history inspect <name_or_id>
+    - docker buildx history inspect je77zfuuzbuerrl5ufwmjolo8
+        Name:           docker/nginx-classic
+        Dockerfile:     docker/nginx-classic/Dockerfile.php-fpm
+        VCS Repository: https://github.com/vuducsaobien/docker.git
+        VCS Revision:   cc8e38e12be48a4d112075721a3f171a5aca46e4
+
+        Started:        2025-11-27 11:06:04
+        Duration:       4m 18s
+        Build Steps:    11/11 (0% cached)
+
+        Image Resolve Mode:             local
+        local-sessionid:context:        m1x1zcq3vql53jyfo6sy0mw7h
+        local-sessionid:dockerfile:     m1x1zcq3vql53jyfo6sy0mw7h
+
+        Materials:
+        URI                                                     DIGEST
+        pkg:docker/composer@latest?platform=linux%2Farm64       sha256:8f3b7d97cd7436dae41d6af0dd6a53853779040ecac26e65544fc31746035705
+        pkg:docker/php@8.3-fpm?platform=linux%2Farm64           sha256:76de5af83c47d269f631dd6c06842e0fd48470278c11193e9d2b0a949fc99efe
+
+        Attachments:
+        DIGEST                                                                  PLATFORM        TYPE
+        sha256:f91507b5ab3eaf47863f1e85698cef37ff130306c99c299fef533e66563ca41a                 application/vnd.oci.image.index.v1+json
+        sha256:a9a3aeb2c4ab6c51cf4bfb263ba69fe726ba8a87041f10b89ef102f1c9327b23                 https://slsa.dev/provenance/v0.2
+        sha256:49dcf59bdcd4d2cd1227c4952164af8b014d7f0a177305e3ab42b089d11df555 linux/arm64     application/vnd.oci.image.manifest.v1+json
+
+        Print build logs: docker buildx history logs je77zfuuzbuerrl5ufwmjolo8
+        View build in Docker Desktop: docker-desktop://dashboard/build/desktop-linux/desktop-linux/je77zfuuzbuerrl5ufwmjolo8
+
+3. Xem log 1 Build:
+    - docker buildx history logs je77zfuuzbuerrl5ufwmjolo8
