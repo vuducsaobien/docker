@@ -1,0 +1,34 @@
+Gộp 2 service nginx & php-fpm lại thành 1 service được không ?
+Tại sao phải tách thành 2 service ?
+
+- Có thể gộp, nhưng không nên
+Về mặt kỹ thuật, bạn có thể gộp nginx và php-fpm vào một container, 
+nhưng đây không phải best practice.
+
+Tại sao nên tách thành 2 service?
+1. Separation of Concerns (Tách biệt trách nhiệm)
+- Nginx: xử lý HTTP requests, static files, reverse proxy
+- PHP-FPM: xử lý PHP code, business logic
+- Mỗi service có trách nhiệm riêng, dễ bảo trì
+
+2. Scalability (Khả năng mở rộng)
+Tách riêng:
+- 1 nginx container → 3 php-fpm containers (xử lý nhiều PHP requests hơn)
+- Scale độc lập theo nhu cầu
+
+Gộp chung:
+- Phải scale cả nginx + php-fpm cùng lúc (không linh hoạt)
+
+3. Resource Management
+- Nginx: nhẹ, ít RAM/CPU
+- PHP-FPM: nặng hơn, cần nhiều RAM/CPU
+- Tách riêng giúp cấp phát tài nguyên phù hợp
+
+4. Update & Maintenance
+- Update nginx không ảnh hưởng PHP-FPM
+- Update PHP version không ảnh hưởng nginx
+- Dễ debug từng service
+
+5. Best Practices
+- Mỗi container nên chạy một process chính
+- Tuân thủ nguyên tắc "one process per container"
