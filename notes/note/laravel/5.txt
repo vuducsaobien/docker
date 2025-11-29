@@ -1,0 +1,15 @@
+Trong commit này, sẽ đổi port Container mysql từ 3306 thành 3308
+- docker ps
+    CONTAINER ID   IMAGE            COMMAND                  CREATED              STATUS                        PORTS                                         NAMES
+    3b2fabd9aa1b   docker-nginx     "/docker-entrypoint.…"   About a minute ago   Up About a minute             0.0.0.0:8080->80/tcp, [::]:8080->80/tcp       laravel_nginx
+    b92bfee074f8   docker-php-fpm   "docker-php-entrypoi…"   About a minute ago   Up About a minute             9000/tcp                                      laravel_php-fpm
+    16038b389198   mysql:8.0        "docker-entrypoint.s…"   About a minute ago   Up About a minute (healthy)   0.0.0.0:3307->3306/tcp, [::]:3307->3306/tcp   laravel_mysql
+- docker compose down
+- docker compose up -d
+- docker ps
+    CONTAINER ID   IMAGE            COMMAND                  CREATED              STATUS                        PORTS                                         NAMES
+    3dd9227c3f11   docker-nginx     "/docker-entrypoint.…"   About a minute ago   Up About a minute             0.0.0.0:8080->80/tcp, [::]:8080->80/tcp       laravel_nginx
+    03c1b0987cfa   docker-php-fpm   "docker-php-entrypoi…"   About a minute ago   Up About a minute             9000/tcp                                      laravel_php-fpm
+    28073af16d15   mysql:8.0        "docker-entrypoint.s…"   About a minute ago   Up About a minute (healthy)   0.0.0.0:3307->3308/tcp, [::]:3307->3308/tcp   laravel_mysql
+=> Thấy Container laravel_mysql đã đổi port từ 3306 thành 3308 & thông tin kết nối DBevaer không thay đổi
+=> Trong file docker-compose.yml

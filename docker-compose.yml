@@ -28,7 +28,7 @@ services:
       APP_URL: http://localhost:8080
       DB_CONNECTION: mysql
       DB_HOST: mysql
-      DB_PORT: 3306
+      DB_PORT: 3308
       DB_DATABASE: laravel
       DB_USERNAME: laravel
       DB_PASSWORD: secret
@@ -39,7 +39,7 @@ services:
   mysql:
     image: mysql:8.0
     container_name: laravel_mysql
-    command: --default-authentication-plugin=mysql_native_password
+    command: --default-authentication-plugin=mysql_native_password --port=3308
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: rootsecret
@@ -49,9 +49,13 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     ports:
-      - "3307:3306"
+      - "3307:3308"
+      # Port 3307 là port mà máy host sẽ kết nối tới Container mysql (Port của thông tin connection Dbeaver)
+      # Port 3308 là port mà Container mysql sẽ mở ra để kết nối tới máy host
+      # => Khi máy host kết nối tới port 3307, nó sẽ kết nối tới port 3308 của Container mysql
+      # => Container mysql sẽ mở ra port 3308 để kết nối tới máy host
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootsecret"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-P", "3308", "-u", "root", "-prootsecret"]
       interval: 10s
       timeout: 5s
       retries: 5
