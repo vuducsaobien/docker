@@ -1,0 +1,2 @@
+1. Move file docker-compose.yml từ root vào /laravel-app/
+1. Move folder /docker từ root vào /laravel-app/
