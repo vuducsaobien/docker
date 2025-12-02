@@ -9,3 +9,6 @@
 - Câu lệnh để tìm thông tin kết nối của 1 Dbeaver connection
     + open -e $(find ~/Library/DBeaverData -type f -name "data-sources.json" | head -n 1)
     + Sau đó tìm name của connection
+
+- Liệt kê danh sách các Build hiện có. 
+    + docker buildx history ls

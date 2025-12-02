@@ -7,11 +7,9 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./laravel-app:/var/www/html
-      # Cách kiểm tra trong folder laravel-app có những file nào
-      # File này (docker-compose.yml) sẽ mount folder laravel-app vào folder /var/www/html trong container nginx
-      # Khi container nginx khởi động, nó sẽ sử dụng file laravel-app trong folder /var/www/html
-      # Kết quả: Khi container nginx khởi động, nó sẽ sử dụng file laravel-app trong folder /var/www/html
+      - .:/var/www/html
+      # File docker-compose.yml đã ở trong laravel-app/, nên mount chính folder hiện tại (.) vào /var/www/html
+      # Khi container nginx khởi động, nó sẽ sử dụng toàn bộ Laravel app trong folder /var/www/html
     depends_on:
       - php-fpm
 
@@ -21,7 +19,8 @@ services:
       dockerfile: Dockerfile.php-fpm
     container_name: laravel_php-fpm
     volumes:
-      - ./laravel-app:/var/www/html
+      - .:/var/www/html
+      # File docker-compose.yml đã ở trong laravel-app/, nên mount chính folder hiện tại (.) vào /var/www/html
     environment:
       APP_ENV: local
       APP_DEBUG: "true"

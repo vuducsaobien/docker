@@ -1,0 +1,70 @@
+- cd laravel-app
+- docker system df -v
+    Images space usage:
+
+    REPOSITORY   TAG       IMAGE ID   CREATED   SIZE      SHARED SIZE   UNIQUE SIZE   CONTAINERS
+
+    Containers space usage:
+
+    CONTAINER ID   IMAGE     COMMAND   LOCAL VOLUMES   SIZE      CREATED   STATUS    NAMES
+
+    Local Volumes space usage:
+
+    VOLUME NAME   LINKS     SIZE
+
+    Build cache usage: 0B
+
+    CACHE ID   CACHE TYPE   SIZE      CREATED   LAST USED   USAGE     SHARED
+
+    => Rỗng hết
+- docker compose build
+- Liệt kê danh sách các Build hiện có. 
+    + docker buildx history ls
+        BUILD ID                    NAME                               STATUS      CREATED AT       DURATION   
+        mwd3yao3di5pt647hm4rsukfb   laravel-app/docker/nginx-classic   Completed   15 minutes ago   8.1s       Open
+        wehshz44t9pfuk88br1664bia   laravel-app/docker/nginx-classic   Completed   15 minutes ago   3m 49s     Open
+
+- docker system df -v
+    Images space usage:
+
+    REPOSITORY            TAG       IMAGE ID       CREATED          SIZE      SHARED SIZE   UNIQUE SIZE   CONTAINERS
+    laravel-app-php-fpm   latest    2b8d20e1c6c4   12 minutes ago   895MB     0B            895.2MB       0
+    laravel-app-nginx     latest    9596ed97a6ba   16 minutes ago   80.9MB    0B            80.91MB       0
+
+    Containers space usage:
+
+    CONTAINER ID   IMAGE     COMMAND   LOCAL VOLUMES   SIZE      CREATED   STATUS    NAMES
+
+    Local Volumes space usage:
+
+    VOLUME NAME   LINKS     SIZE
+
+    Build cache usage: 295MB
+
+    CACHE ID       CACHE TYPE     SIZE      CREATED          LAST USED        USAGE     SHARED
+
+- docker compose up -d
+    Images space usage:
+
+    REPOSITORY            TAG       IMAGE ID       CREATED          SIZE      SHARED SIZE   UNIQUE SIZE   CONTAINERS
+    laravel-app-php-fpm   latest    2b8d20e1c6c4   19 minutes ago   895MB     0B            895.2MB       1
+    laravel-app-nginx     latest    9596ed97a6ba   22 minutes ago   80.9MB    0B            80.91MB       1
+    mysql                 8.0       c7d30101340e   16 hours ago     1.05GB    0B            1.055GB       1
+
+    Containers space usage:
+
+    CONTAINER ID   IMAGE                 COMMAND                  LOCAL VOLUMES   SIZE      CREATED              STATUS                        NAMES
+    dc4c741b12ab   laravel-app-nginx     "/docker-entrypoint.…"   0               90.1kB    About a minute ago   Up About a minute             laravel_nginx
+    54aaac651f15   laravel-app-php-fpm   "docker-php-entrypoi…"   0               4.1kB     About a minute ago   Up About a minute             laravel_php-fpm
+    8b29def62536   mysql:8.0             "docker-entrypoint.s…"   1               32.8kB    About a minute ago   Up About a minute (healthy)   laravel_mysql
+
+    Local Volumes space usage:
+
+    VOLUME NAME              LINKS     SIZE
+    laravel-app_mysql_data   1         210.3MB
+
+    Build cache usage: 295MB
+
+    CACHE ID       CACHE TYPE     SIZE      CREATED          LAST USED        USAGE     SHARED
+=> Vào trong Dbeaver thì không thấy table nào hết, nên phải restore lại = File backup
+- Vào http://localhost:8080 => Ra các record của User model => Kết nối DB thành công
